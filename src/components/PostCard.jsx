@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { deletePost as deletePostAPI, updatePost as updatePostAPI, likePost as likePostAPI, commentPost as commentPostAPI, savePost as savePostAPI, sharePost as sharePostAPI } from '../utils/api';
-import { deletePost, updatePost, updatePostInteraction } from '../store/postsSlice';
-import { FaComment, FaShare, FaEllipsisH, FaEdit, FaTrash, FaHeart, FaBookmark } from 'react-icons/fa';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  deletePost as deletePostAPI,
+  updatePost as updatePostAPI,
+  likePost as likePostAPI,
+  commentPost as commentPostAPI,
+  savePost as savePostAPI,
+  sharePost as sharePostAPI,
+} from "../utils/api";
+import {
+  deletePost,
+  updatePost,
+  updatePostInteraction,
+} from "../store/postsSlice";
+import {
+  FaComment,
+  FaShare,
+  FaEllipsisH,
+  FaEdit,
+  FaTrash,
+  FaHeart,
+  FaBookmark,
+} from "react-icons/fa";
 
 const PostCard = ({ post, isMyPost = false }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [commentText, setCommentText] = useState('');
+  const [commentText, setCommentText] = useState("");
   const [editData, setEditData] = useState({
     title: post.title,
     content: post.content,
@@ -18,13 +37,21 @@ const PostCard = ({ post, isMyPost = false }) => {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [localLikesCount, setLocalLikesCount] = useState(post.likesCount || 0);
-  const [localCommentsCount, setLocalCommentsCount] = useState(post.commentsCount || 0);
-  const [localSharesCount, setLocalSharesCount] = useState(post.sharesCount || 0);
+  const [localCommentsCount, setLocalCommentsCount] = useState(
+    post.commentsCount || 0
+  );
+  const [localSharesCount, setLocalSharesCount] = useState(
+    post.sharesCount || 0
+  );
   const [localComments, setLocalComments] = useState(post.comments || []);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const handlePostClick = () => {
+    navigate(`/post/${post._id}`);
+  };
 
   const formatDate = (date) => {
     const postDate = new Date(date);
@@ -37,15 +64,19 @@ const PostCard = ({ post, isMyPost = false }) => {
     if (diffMinutes < 60) return `${diffMinutes}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays < 7) return `${diffDays}d ago`;
-    
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+
+    const options = { year: "numeric", month: "short", day: "numeric" };
     return postDate.toLocaleDateString(undefined, options);
   };
 
   const requireAuth = (callback) => {
     if (!isAuthenticated) {
-      if (window.confirm('Please sign in to interact with posts. Go to sign in page?')) {
-        navigate('/sign-in');
+      if (
+        window.confirm(
+          "Please sign in to interact with posts. Go to sign in page?"
+        )
+      ) {
+        navigate("/sign-in");
       }
       return;
     }
@@ -53,7 +84,7 @@ const PostCard = ({ post, isMyPost = false }) => {
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
+    if (window.confirm("Are you sure you want to delete this post?")) {
       try {
         setLoading(true);
         const response = await deletePostAPI(post._id);
@@ -61,8 +92,8 @@ const PostCard = ({ post, isMyPost = false }) => {
           dispatch(deletePost(post._id));
         }
       } catch (error) {
-        console.error('Failed to delete post:', error);
-        alert('Failed to delete post');
+        console.error("Failed to delete post:", error);
+        alert("Failed to delete post");
       } finally {
         setLoading(false);
       }
@@ -72,7 +103,7 @@ const PostCard = ({ post, isMyPost = false }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!editData.title || !editData.content) {
-      alert('Title and content are required');
+      alert("Title and content are required");
       return;
     }
 
@@ -80,12 +111,18 @@ const PostCard = ({ post, isMyPost = false }) => {
       setLoading(true);
       const response = await updatePostAPI(post._id, editData);
       if (response.success) {
-        dispatch(updatePost({ ...post, ...editData, updatedAt: new Date().toISOString() }));
+        dispatch(
+          updatePost({
+            ...post,
+            ...editData,
+            updatedAt: new Date().toISOString(),
+          })
+        );
         setIsEditing(false);
       }
     } catch (error) {
-      console.error('Failed to update post:', error);
-      alert('Failed to update post');
+      console.error("Failed to update post:", error);
+      alert("Failed to update post");
     } finally {
       setLoading(false);
     }
@@ -96,18 +133,22 @@ const PostCard = ({ post, isMyPost = false }) => {
       try {
         const newLiked = !liked;
         setLiked(newLiked);
-        setLocalLikesCount(prev => newLiked ? prev + 1 : Math.max(0, prev - 1));
-        
+        setLocalLikesCount((prev) =>
+          newLiked ? prev + 1 : Math.max(0, prev - 1)
+        );
+
         const response = await likePostAPI(post._id);
         if (response.success) {
           setLocalLikesCount(response.likesCount);
-          dispatch(updatePostInteraction({
-            postId: post._id,
-            updates: { likesCount: response.likesCount }
-          }));
+          dispatch(
+            updatePostInteraction({
+              postId: post._id,
+              updates: { likesCount: response.likesCount },
+            })
+          );
         }
       } catch (error) {
-        console.error('Failed to like post:', error);
+        console.error("Failed to like post:", error);
         setLiked(!liked);
         setLocalLikesCount(post.likesCount || 0);
       }
@@ -122,20 +163,22 @@ const PostCard = ({ post, isMyPost = false }) => {
       try {
         const response = await commentPostAPI(post._id, commentText);
         if (response.success) {
-          setLocalComments(prev => [...prev, response.comment]);
+          setLocalComments((prev) => [...prev, response.comment]);
           setLocalCommentsCount(response.commentsCount);
-          setCommentText('');
-          dispatch(updatePostInteraction({
-            postId: post._id,
-            updates: { 
-              comments: [...localComments, response.comment],
-              commentsCount: response.commentsCount 
-            }
-          }));
+          setCommentText("");
+          dispatch(
+            updatePostInteraction({
+              postId: post._id,
+              updates: {
+                comments: [...localComments, response.comment],
+                commentsCount: response.commentsCount,
+              },
+            })
+          );
         }
       } catch (error) {
-        console.error('Failed to comment:', error);
-        alert('Failed to post comment');
+        console.error("Failed to comment:", error);
+        alert("Failed to post comment");
       }
     });
   };
@@ -145,13 +188,13 @@ const PostCard = ({ post, isMyPost = false }) => {
       try {
         const newSaved = !saved;
         setSaved(newSaved);
-        
+
         const response = await savePostAPI(post._id);
         if (response.success) {
           // Optionally show success message
         }
       } catch (error) {
-        console.error('Failed to save post:', error);
+        console.error("Failed to save post:", error);
         setSaved(!saved);
       }
     });
@@ -161,22 +204,24 @@ const PostCard = ({ post, isMyPost = false }) => {
     requireAuth(async () => {
       try {
         // Copy link to clipboard
-        const postUrl = `${window.location.origin}/posts/${post._id}`;
+        const postUrl = `${window.location.origin}/post/${post._id}`;
         await navigator.clipboard.writeText(postUrl);
-        
+
         // Increment share count
         const response = await sharePostAPI(post._id);
         if (response.success) {
           setLocalSharesCount(response.sharesCount);
-          dispatch(updatePostInteraction({
-            postId: post._id,
-            updates: { sharesCount: response.sharesCount }
-          }));
-          alert('Link copied to clipboard!');
+          dispatch(
+            updatePostInteraction({
+              postId: post._id,
+              updates: { sharesCount: response.sharesCount },
+            })
+          );
+          alert("Link copied to clipboard!");
         }
       } catch (error) {
-        console.error('Failed to share post:', error);
-        alert('Failed to share post');
+        console.error("Failed to share post:", error);
+        alert("Failed to share post");
       }
     });
   };
@@ -185,7 +230,7 @@ const PostCard = ({ post, isMyPost = false }) => {
   const highlightMentions = (text) => {
     const parts = text.split(/(@\w+)/g);
     return parts.map((part, index) => {
-      if (part.startsWith('@')) {
+      if (part.startsWith("@")) {
         return (
           <span key={index} className="text-orange-600 font-semibold">
             {part}
@@ -203,12 +248,12 @@ const PostCard = ({ post, isMyPost = false }) => {
         <header className="mb-5 flex items-start justify-between gap-4">
           <div className="flex items-start gap-4">
             <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-lg font-bold text-white shadow-lg shadow-orange-500/30">
-              {post.authorId?.name?.charAt(0).toUpperCase() || 'U'}
+              {post.authorId?.name?.charAt(0).toUpperCase() || "U"}
               <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border border-white bg-emerald-400" />
             </span>
             <div>
               <h3 className="text-base font-semibold text-black">
-                {post.authorId?.name || 'Unknown User'}
+                {post.authorId?.name || "Unknown User"}
               </h3>
               <p className="mt-1 text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
                 {formatDate(post.createdAt)}
@@ -228,7 +273,10 @@ const PostCard = ({ post, isMyPost = false }) => {
               </button>
 
               {showMenu && (
-                <div className="absolute right-0 mt-3 w-48 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-xl" role="menu">
+                <div
+                  className="absolute right-0 mt-3 w-48 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-xl"
+                  role="menu"
+                >
                   <button
                     onClick={() => {
                       setIsEditing(true);
@@ -245,7 +293,7 @@ const PostCard = ({ post, isMyPost = false }) => {
                     className="flex w-full items-center gap-3 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
                   >
                     <FaTrash />
-                    <span>{loading ? 'Deleting...' : 'Remove'}</span>
+                    <span>{loading ? "Deleting..." : "Remove"}</span>
                   </button>
                 </div>
               )}
@@ -258,12 +306,16 @@ const PostCard = ({ post, isMyPost = false }) => {
             <input
               type="text"
               value={editData.title}
-              onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, title: e.target.value })
+              }
               className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-lg font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
             />
             <textarea
               value={editData.content}
-              onChange={(e) => setEditData({ ...editData, content: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, content: e.target.value })
+              }
               rows="4"
               className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
             ></textarea>
@@ -273,7 +325,7 @@ const PostCard = ({ post, isMyPost = false }) => {
                 disabled={loading}
                 className="rounded-full bg-black px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-black/90 disabled:translate-y-0 disabled:opacity-50"
               >
-                {loading ? 'Saving...' : 'Save changes'}
+                {loading ? "Saving..." : "Save changes"}
               </button>
               <button
                 type="button"
@@ -288,42 +340,48 @@ const PostCard = ({ post, isMyPost = false }) => {
             </div>
           </form>
         ) : (
-          <div className="space-y-3">
+          <div onClick={handlePostClick} className="space-y-3 cursor-pointer">
             <h2 className="text-xl font-semibold text-black">{post.title}</h2>
-            <p className="text-sm leading-relaxed text-black/70 whitespace-pre-wrap">{post.content}</p>
+            <p className="text-sm leading-relaxed text-black/70 whitespace-pre-wrap">
+              {post.content}
+            </p>
           </div>
         )}
       </div>
 
-  <footer className="border-t border-black/5 bg-black/5">
+      <footer className="border-t border-black/5 bg-black/5">
         <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-black/50">
           <button
             onClick={handleLike}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 transition ${
-              liked ? 'bg-orange-500/10 text-orange-600' : 'hover:bg-black/5'
+              liked ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
             }`}
           >
-            <FaHeart className={liked ? 'text-orange-500' : ''} />
-            <span>{localLikesCount > 0 ? `${localLikesCount}` : 'Like'}</span>
+            <FaHeart className={liked ? "text-orange-500" : ""} />
+            <span>{localLikesCount > 0 ? `${localLikesCount}` : "Like"}</span>
           </button>
-          <button 
+          <button
             onClick={() => setShowComments(!showComments)}
             className="inline-flex items-center gap-2 rounded-full px-4 py-2 transition hover:bg-black/5"
           >
             <FaComment />
-            <span>{localCommentsCount > 0 ? `${localCommentsCount}` : 'Comment'}</span>
+            <span>
+              {localCommentsCount > 0 ? `${localCommentsCount}` : "Comment"}
+            </span>
           </button>
-          <button 
+          <button
             onClick={handleShare}
             className="inline-flex items-center gap-2 rounded-full px-4 py-2 transition hover:bg-black/5"
           >
             <FaShare />
-            <span>{localSharesCount > 0 ? `${localSharesCount}` : 'Share'}</span>
+            <span>
+              {localSharesCount > 0 ? `${localSharesCount}` : "Share"}
+            </span>
           </button>
           <button
             onClick={handleSave}
             className={`inline-flex items-center gap-2 rounded-full px-3 py-2 transition ${
-              saved ? 'bg-orange-500/10 text-orange-600' : 'hover:bg-black/5'
+              saved ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
             }`}
           >
             <FaBookmark />
@@ -357,13 +415,13 @@ const PostCard = ({ post, isMyPost = false }) => {
             ) : (
               <div className="mb-4 rounded-2xl bg-orange-500/5 p-4 text-center">
                 <p className="text-sm text-black/60">
-                  <button 
-                    onClick={() => navigate('/sign-in')}
+                  <button
+                    onClick={() => navigate("/sign-in")}
                     className="font-semibold text-orange-600 hover:underline"
                   >
                     Sign in
-                  </button>
-                  {' '}to comment on this post
+                  </button>{" "}
+                  to comment on this post
                 </p>
               </div>
             )}
@@ -371,17 +429,19 @@ const PostCard = ({ post, isMyPost = false }) => {
             {/* Comments List */}
             <div className="space-y-4">
               {localComments.length === 0 ? (
-                <p className="text-center text-sm text-black/40">No comments yet. Be the first!</p>
+                <p className="text-center text-sm text-black/40">
+                  No comments yet. Be the first!
+                </p>
               ) : (
                 localComments.map((comment, index) => (
                   <div key={index} className="flex gap-3">
                     <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10 text-sm font-bold text-orange-600">
-                      {comment.userId?.name?.charAt(0).toUpperCase() || 'U'}
+                      {comment.userId?.name?.charAt(0).toUpperCase() || "U"}
                     </span>
                     <div className="flex-1">
                       <div className="rounded-2xl bg-black/5 px-4 py-3">
                         <p className="text-sm font-semibold text-black">
-                          {comment.userId?.name || 'Unknown User'}
+                          {comment.userId?.name || "Unknown User"}
                         </p>
                         <p className="mt-1 text-sm text-black/70">
                           {highlightMentions(comment.text)}
