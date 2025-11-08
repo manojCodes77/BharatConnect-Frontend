@@ -36,7 +36,6 @@ const Navbar = () => {
           </div>
         </Link>
 
-        <div className="hidden items-center gap-1 rounded-full border border-black/10 bg-white/70 px-1 py-1 shadow-sm md:flex"></div>
 
         <div className="flex items-center gap-2">
           {isAuthenticated ? (
