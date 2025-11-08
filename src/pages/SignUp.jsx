@@ -83,10 +83,19 @@ const SignUp = () => {
       const response = await signUp(signUpData);
       
       if (response.success) {
-        setSuccess(true);
-        setTimeout(() => {
-          navigate('/sign-in');
-        }, 2000);
+        // Store user info and token if signup returns them
+        if (response.token && response.user) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          // Redirect to home instead of sign-in
+          navigate('/');
+        } else {
+          // Old behavior: redirect to sign-in
+          setSuccess(true);
+          setTimeout(() => {
+            navigate('/sign-in');
+          }, 2000);
+        }
       } else {
         setError(response.message || 'Failed to sign up');
       }

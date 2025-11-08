@@ -9,6 +9,7 @@ import { FaEdit, FaMapMarkerAlt, FaBriefcase, FaGraduationCap, FaEnvelope } from
 const Profile = () => {
   const dispatch = useDispatch();
   const { myPosts } = useSelector((state) => state.posts);
+  const { user } = useSelector((state) => state.auth);
   const [localLoading, setLocalLoading] = useState(true);
   const [error, setLocalError] = useState('');
 
@@ -31,7 +32,7 @@ const Profile = () => {
     fetchMyPosts();
   }, [dispatch]);
 
-  const userName = localStorage.getItem('userName') || 'User';
+  const userName = user?.name || 'User';
 
   return (
     <Layout>

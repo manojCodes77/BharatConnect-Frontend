@@ -37,7 +37,7 @@ const SignIn = () => {
       const response = await signIn(formData);
       
       if (response.success) {
-        dispatch(loginSuccess({ token: response.token }));
+        dispatch(loginSuccess({ token: response.token, user: response.user }));
         navigate('/');
       } else {
         setError(response.message || 'Failed to sign in');
