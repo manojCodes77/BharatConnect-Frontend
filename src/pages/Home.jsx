@@ -73,9 +73,9 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="space-y-10">
-        <section className="grid gap-6 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[250px_minmax(0,1fr)_280px]">
-          <aside className="order-2 space-y-5 lg:order-1">
+      <div className="space-y-6 sm:space-y-10">
+        <section className="grid gap-4 sm:gap-6 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[250px_minmax(0,1fr)_280px]">
+          <aside className="order-2 space-y-4 sm:space-y-5 lg:order-1">
             <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
               <div className="mb-5 flex items-center justify-between">
                 <span className="inline-flex items-center gap-[0.35rem] px-[0.9rem] py-[0.35rem] rounded-full bg-[rgba(255,107,44,0.14)] text-[#d94a00] font-semibold tracking-[0.02em] uppercase text-xs">Momentum today</span>
@@ -129,24 +129,24 @@ const Home = () => {
           </aside>
 
           <section className="order-1 space-y-6 lg:order-2">
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500 via-orange-400 to-orange-600 text-white shadow-xl">
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-linear-to-br from-orange-500 via-orange-400 to-orange-600 text-white shadow-xl">
               <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_20%_0%,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_70%),radial-gradient(60%_60%_at_90%_20%,rgba(17,17,20,0.12)_0%,rgba(17,17,20,0)_70%)] mix-blend-screen opacity-80" />
-              <div className="relative z-10 grid gap-6 px-8 py-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div className="relative z-10 grid gap-4 sm:gap-6 px-5 sm:px-8 py-8 sm:py-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
                 <div>
-                  <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em]">BharatConnect</span>
-                  <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-4xl">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.2em] sm:tracking-[0.3em]">BharatConnect</span>
+                  <h1 className="mt-3 sm:mt-4 text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">
                     Stories, skills, and opportunities from the heart of India.
                   </h1>
-                  <p className="mt-3 max-w-xl text-sm text-white/80 md:text-base">
+                  <p className="mt-2 sm:mt-3 max-w-xl text-sm text-white/80 md:text-base">
                     Share progress, discover collaborators, and celebrate wins with a network built for India's creators and professionals.
                   </p>
-                  <div className="mt-5 flex flex-wrap gap-3">
-                    <button type="button" className="relative inline-flex items-center justify-center gap-2 px-[1.6rem] py-[0.85rem] rounded-[14px] font-bold text-white bg-gradient-to-[135deg] from-[#ff6b2c] to-[#d94a00] shadow-[0_18px_28px_rgba(255,107,44,0.26)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_22px_40px_rgba(255,107,44,0.3)] text-sm uppercase tracking-wide">
+                  <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 sm:gap-3">
+                    <button type="button" className="relative inline-flex items-center justify-center gap-2 px-5 sm:px-[1.6rem] py-2.5 sm:py-[0.85rem] rounded-xl sm:rounded-[14px] font-bold text-white bg-gradient-to-[135deg] from-[#ff6b2c] to-[#d94a00] shadow-[0_18px_28px_rgba(255,107,44,0.26)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_22px_40px_rgba(255,107,44,0.3)] text-xs sm:text-sm uppercase tracking-wide">
                       Start sharing
                     </button>
                     <button
                       type="button"
-                      className="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/25"
+                      className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-white/25"
                     >
                       Explore sparks
                     </button>

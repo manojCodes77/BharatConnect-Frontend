@@ -242,39 +242,39 @@ const PostCard = ({ post, isMyPost = false }) => {
   };
 
   return (
-    <article className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] mb-6 overflow-hidden">
-      <div className="h-1 bg-gradient-to-r from-orange-500 via-orange-400 to-orange-600" />
-      <div className="p-6">
-        <header className="mb-5 flex items-start justify-between gap-4">
-          <div className="flex items-start gap-4">
-            <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-lg font-bold text-white shadow-lg shadow-orange-500/30">
+    <article className="bg-white border border-black/[0.08] rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] mb-4 sm:mb-6 overflow-hidden">
+      <div className="h-1 bg-linear-to-r from-orange-500 via-orange-400 to-orange-600" />
+      <div className="p-4 sm:p-6">
+        <header className="mb-4 sm:mb-5 flex items-start justify-between gap-2 sm:gap-4">
+          <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+            <span className="relative inline-flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-base sm:text-lg font-bold text-white shadow-lg shadow-orange-500/30">
               {post.authorId?.name?.charAt(0).toUpperCase() || "U"}
-              <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border border-white bg-emerald-400" />
+              <span className="absolute -bottom-1 -right-1 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full border border-white bg-emerald-400" />
             </span>
-            <div>
-              <h3 className="text-base font-semibold text-black">
+            <div className="min-w-0 flex-1">
+              <h3 className="text-sm sm:text-base font-semibold text-black truncate">
                 {post.authorId?.name || "Unknown User"}
               </h3>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
+              <p className="mt-1 text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.25em] text-black/40">
                 {formatDate(post.createdAt)}
               </p>
             </div>
           </div>
 
           {isMyPost && (
-            <div className="relative">
+            <div className="relative shrink-0">
               <button
                 onClick={() => setShowMenu(!showMenu)}
-                className="rounded-full border border-black/10 p-2 text-black/40 transition hover:border-orange-400/60 hover:text-black"
+                className="rounded-full border border-black/10 p-1.5 sm:p-2 text-black/40 transition hover:border-orange-400/60 hover:text-black"
                 aria-haspopup="menu"
                 aria-expanded={showMenu}
               >
-                <FaEllipsisH />
+                <FaEllipsisH className="text-sm sm:text-base" />
               </button>
 
               {showMenu && (
                 <div
-                  className="absolute right-0 mt-3 w-48 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-xl"
+                  className="absolute right-0 mt-2 sm:mt-3 w-44 sm:w-48 overflow-hidden rounded-xl sm:rounded-2xl border border-black/5 bg-white shadow-xl z-10"
                   role="menu"
                 >
                   <button
@@ -282,7 +282,7 @@ const PostCard = ({ post, isMyPost = false }) => {
                       setIsEditing(true);
                       setShowMenu(false);
                     }}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-sm font-semibold text-black/70 transition hover:bg-orange-500/5"
+                    className="flex w-full items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-black/70 transition hover:bg-orange-500/5"
                   >
                     <FaEdit className="text-orange-500" />
                     <span>Edit story</span>
@@ -290,7 +290,7 @@ const PostCard = ({ post, isMyPost = false }) => {
                   <button
                     onClick={handleDelete}
                     disabled={loading}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                    className="flex w-full items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-red-600 transition hover:bg-red-50"
                   >
                     <FaTrash />
                     <span>{loading ? "Deleting..." : "Remove"}</span>
@@ -340,9 +340,9 @@ const PostCard = ({ post, isMyPost = false }) => {
             </div>
           </form>
         ) : (
-          <div onClick={handlePostClick} className="space-y-3 cursor-pointer">
-            <h2 className="text-xl font-semibold text-black">{post.title}</h2>
-            <p className="text-sm leading-relaxed text-black/70 whitespace-pre-wrap">
+          <div onClick={handlePostClick} className="space-y-2 sm:space-y-3 cursor-pointer">
+            <h2 className="text-lg sm:text-xl font-semibold text-black wrap-break-word">{post.title}</h2>
+            <p className="text-sm leading-relaxed text-black/70 whitespace-pre-wrap wrap-break-word">
               {post.content}
             </p>
           </div>
@@ -350,48 +350,48 @@ const PostCard = ({ post, isMyPost = false }) => {
       </div>
 
       <footer className="border-t border-black/5 bg-black/5">
-        <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-black/50">
+        <div className="flex flex-wrap items-center justify-center sm:justify-between gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-black/50">
           <button
             onClick={handleLike}
-            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 transition ${
+            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition ${
               liked ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
             }`}
           >
-            <FaHeart className={liked ? "text-orange-500" : ""} />
+            <FaHeart className={`text-xs sm:text-sm ${liked ? "text-orange-500" : ""}`} />
             <span>{localLikesCount > 0 ? `${localLikesCount}` : "Like"}</span>
           </button>
           <button
             onClick={() => setShowComments(!showComments)}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 transition hover:bg-black/5"
+            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition hover:bg-black/5"
           >
-            <FaComment />
+            <FaComment className="text-xs sm:text-sm" />
             <span>
               {localCommentsCount > 0 ? `${localCommentsCount}` : "Comment"}
             </span>
           </button>
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 transition hover:bg-black/5"
+            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition hover:bg-black/5"
           >
-            <FaShare />
+            <FaShare className="text-xs sm:text-sm" />
             <span>
               {localSharesCount > 0 ? `${localSharesCount}` : "Share"}
             </span>
           </button>
           <button
             onClick={handleSave}
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-2 transition ${
+            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-1.5 sm:py-2 transition ${
               saved ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
             }`}
           >
-            <FaBookmark />
+            <FaBookmark className="text-xs sm:text-sm" />
             <span className="hidden sm:inline">Save</span>
           </button>
         </div>
 
         {/* Comments Section */}
         {showComments && (
-          <div className="border-t border-black/5 bg-white px-6 py-4">
+          <div className="border-t border-black/5 bg-white px-4 sm:px-6 py-3 sm:py-4">
             {/* Comment Input */}
             {isAuthenticated ? (
               <form onSubmit={handleComment} className="mb-4">
@@ -400,21 +400,21 @@ const PostCard = ({ post, isMyPost = false }) => {
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Write a comment... (use @name to mention someone)"
                   rows="2"
-                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)] resize-none"
+                  className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)] resize-none"
                 />
                 <div className="mt-2 flex justify-end">
                   <button
                     type="submit"
                     disabled={!commentText.trim()}
-                    className="rounded-full bg-orange-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="rounded-full bg-orange-500 px-4 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Post
                   </button>
                 </div>
               </form>
             ) : (
-              <div className="mb-4 rounded-2xl bg-orange-500/5 p-4 text-center">
-                <p className="text-sm text-black/60">
+              <div className="mb-4 rounded-xl sm:rounded-2xl bg-orange-500/5 p-3 sm:p-4 text-center">
+                <p className="text-xs sm:text-sm text-black/60">
                   <button
                     onClick={() => navigate("/sign-in")}
                     className="font-semibold text-orange-600 hover:underline"
@@ -427,27 +427,27 @@ const PostCard = ({ post, isMyPost = false }) => {
             )}
 
             {/* Comments List */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {localComments.length === 0 ? (
-                <p className="text-center text-sm text-black/40">
+                <p className="text-center text-xs sm:text-sm text-black/40">
                   No comments yet. Be the first!
                 </p>
               ) : (
                 localComments.map((comment, index) => (
-                  <div key={index} className="flex gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10 text-sm font-bold text-orange-600">
+                  <div key={index} className="flex gap-2 sm:gap-3">
+                    <span className="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-xs sm:text-sm font-bold text-orange-600">
                       {comment.userId?.name?.charAt(0).toUpperCase() || "U"}
                     </span>
-                    <div className="flex-1">
-                      <div className="rounded-2xl bg-black/5 px-4 py-3">
-                        <p className="text-sm font-semibold text-black">
+                    <div className="flex-1 min-w-0">
+                      <div className="rounded-xl sm:rounded-2xl bg-black/5 px-3 sm:px-4 py-2 sm:py-3">
+                        <p className="text-xs sm:text-sm font-semibold text-black">
                           {comment.userId?.name || "Unknown User"}
                         </p>
-                        <p className="mt-1 text-sm text-black/70">
+                        <p className="mt-1 text-xs sm:text-sm text-black/70 wrap-break-word">
                           {highlightMentions(comment.text)}
                         </p>
                       </div>
-                      <p className="mt-1 px-4 text-xs text-black/40">
+                      <p className="mt-1 px-3 sm:px-4 text-[0.65rem] sm:text-xs text-black/40">
                         {formatDate(comment.createdAt)}
                       </p>
                     </div>

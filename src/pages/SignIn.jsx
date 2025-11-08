@@ -91,8 +91,8 @@ const SignIn = () => {
         <div className="absolute bottom-12 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-sky-100/60 blur-3xl" />
       </div>
 
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-6 py-16 lg:px-12">
-        <div className="grid w-full max-w-6xl gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 sm:px-6 py-12 sm:py-16 lg:px-12">
+        <div className="grid w-full max-w-6xl gap-6 sm:gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <aside className="relative hidden overflow-hidden rounded-[30px] border border-white/50 bg-white/85 px-12 py-14 text-slate-900 shadow-2xl shadow-orange-200/40 backdrop-blur-xl lg:block">
             <div className="pointer-events-none absolute -right-12 -top-16 h-64 w-64 rounded-full bg-linear-to-br from-orange-200/80 via-orange-100/40 to-transparent blur-3xl" />
             <div className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-linear-to-tr from-orange-100/70 via-white/40 to-transparent blur-3xl" />
@@ -138,45 +138,45 @@ const SignIn = () => {
             </div>
           </aside>
 
-          <section className="relative overflow-hidden rounded-[30px] border border-white/60 bg-white/95 p-8 shadow-xl shadow-orange-200/50 backdrop-blur">
+          <section className="relative overflow-hidden rounded-2xl sm:rounded-[30px] border border-white/60 bg-white/95 p-6 sm:p-8 shadow-xl shadow-orange-200/50 backdrop-blur">
             <div className="absolute -right-24 -top-24 h-56 w-56 rounded-full bg-orange-200/40 blur-3xl" />
             <div className="relative">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <img 
                   src="/favicon.png" 
                   alt="BharatConnect Logo" 
-                  className="h-12 w-auto"
+                  className="h-10 sm:h-12 w-auto"
                 />
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">Access the circle</p>
-                  <h2 className="text-2xl font-semibold text-slate-900">Sign in to BharatConnect</h2>
+                  <p className="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.25em] sm:tracking-[0.35em] text-slate-500">Access the circle</p>
+                  <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">Sign in to BharatConnect</h2>
                 </div>
               </div>
 
-              <p className="mt-4 text-sm text-slate-600">
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-slate-600">
                 Reconnect with a community built to amplify new ideas, skills, and partnerships.
               </p>
 
               {error && (
-                <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600" aria-live="polite">
+                <div className="mt-5 sm:mt-6 rounded-xl sm:rounded-2xl border border-red-200 bg-red-50 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-red-600" aria-live="polite">
                   {error}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+              <form onSubmit={handleSubmit} className="mt-6 sm:mt-8 space-y-5 sm:space-y-6">
                 <div>
-                  <label htmlFor="email" className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                  <label htmlFor="email" className="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-slate-500">
                     Email address
                   </label>
                   <div className="relative mt-2">
-                    <FaEnvelope className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <FaEnvelope className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm" />
                     <input
                       id="email"
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full rounded-2xl border border-slate-200 bg-white px-11 py-3 text-sm font-medium text-slate-800 shadow-sm transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                      className="w-full rounded-xl sm:rounded-2xl border border-slate-200 bg-white px-9 sm:px-11 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-slate-800 shadow-sm transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
                       placeholder="your.email@example.com"
                       autoComplete="email"
                     />
@@ -184,18 +184,18 @@ const SignIn = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                  <label htmlFor="password" className="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-slate-500">
                     Password
                   </label>
                   <div className="relative mt-2">
-                    <FaLock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <FaLock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm" />
                     <input
                       id="password"
                       type="password"
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className="w-full rounded-2xl border border-slate-200 bg-white px-11 py-3 text-sm font-medium text-slate-800 shadow-sm transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                      className="w-full rounded-xl sm:rounded-2xl border border-slate-200 bg-white px-9 sm:px-11 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-slate-800 shadow-sm transition focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
                       placeholder="Enter your password"
                       autoComplete="current-password"
                     />
@@ -205,13 +205,13 @@ const SignIn = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex w-full items-center justify-center rounded-2xl bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-200/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-xl sm:rounded-2xl bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-200/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? 'Signing in...' : 'Enter'}
                 </button>
               </form>
 
-              <div className="mt-8 text-center text-sm text-slate-600">
+              <div className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-slate-600">
                 New to BharatConnect?
                 <Link to="/sign-up" className="ml-2 font-semibold text-orange-600 transition hover:text-orange-500">
                   Create an account

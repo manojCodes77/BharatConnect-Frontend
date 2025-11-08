@@ -126,8 +126,8 @@ const SignUp = () => {
   }
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-[1120px] mx-auto px-[clamp(1.25rem,4vw,2.5rem)] grid gap-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center">
+    <div className="min-h-screen py-8 sm:py-12">
+      <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 grid gap-6 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center">
         <div className="hidden rounded-3xl border border-black/10 bg-white/70 p-10 backdrop-blur-sm shadow-xl shadow-black/10 lg:block">
           <span className="inline-flex items-center gap-[0.35rem] px-[0.9rem] py-[0.35rem] rounded-full bg-[rgba(255,107,44,0.14)] text-[#d94a00] font-semibold tracking-[0.02em] uppercase text-xs">Why join</span>
           <h1 className="mt-6 text-4xl font-extrabold text-black leading-tight">
@@ -149,75 +149,75 @@ const SignUp = () => {
           </div>
         </div>
 
-        <div className="bg-[rgba(255,255,255,0.92)] border border-[rgba(17,17,20,0.06)] rounded-[22px] shadow-[0_22px_44px_rgba(17,17,20,0.12)] relative overflow-hidden p-8">
+        <div className="bg-[rgba(255,255,255,0.92)] border border-[rgba(17,17,20,0.06)] rounded-2xl sm:rounded-[22px] shadow-[0_22px_44px_rgba(17,17,20,0.12)] relative overflow-hidden p-6 sm:p-8">
           <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-orange-500/10" />
           <div className="relative">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <img 
                 src="/favicon.png" 
                 alt="BharatConnect Logo" 
-                className="h-12 w-auto"
+                className="h-10 sm:h-12 w-auto"
               />
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-black/40">Create your profile</p>
-                <h2 className="text-2xl font-extrabold text-black">Join BharatConnect</h2>
+                <p className="text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-black/40">Create your profile</p>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-black">Join BharatConnect</h2>
               </div>
             </div>
-            <p className="mt-4 text-sm text-black/60">Let us know who you are so we can tailor the experience to your goals.</p>
+            <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-black/60">Let us know who you are so we can tailor the experience to your goals.</p>
 
             {error && (
-              <div className="mt-5 rounded-2xl border border-red-200 bg-red-50/80 px-4 py-3 text-sm font-semibold text-red-600">
+              <div className="mt-4 sm:mt-5 rounded-xl sm:rounded-2xl border border-red-200 bg-red-50/80 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-red-600">
                 {error}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+            <form onSubmit={handleSubmit} className="mt-5 sm:mt-6 space-y-4 sm:space-y-5">
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
+                <label className="mb-2 block text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.25em] text-black/40">
                   Full name
                 </label>
                 <div className="relative">
-                  <FaUser className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30" />
+                  <FaUser className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-xs sm:text-sm" />
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full rounded-2xl border border-black/10 bg-white px-11 py-3 text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
+                    className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-9 sm:px-11 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
                     placeholder="Your full name"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
+                <label className="mb-2 block text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.25em] text-black/40">
                   Email address
                 </label>
                 <div className="relative">
-                  <FaEnvelope className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30" />
+                  <FaEnvelope className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-xs sm:text-sm" />
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full rounded-2xl border border-black/10 bg-white px-11 py-3 text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
+                    className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-9 sm:px-11 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
                     placeholder="your.email@example.com"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
+                <label className="mb-2 block text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.25em] text-black/40">
                   Password
                 </label>
                 <div className="relative">
-                  <FaLock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30" />
+                  <FaLock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-xs sm:text-sm" />
                   <input
                     type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full rounded-2xl border border-black/10 bg-white px-11 py-3 text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
+                    className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-9 sm:px-11 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
                     placeholder="Minimum 6 characters"
                     autoComplete='off'
                   />
@@ -225,20 +225,20 @@ const SignUp = () => {
                 
                 {/* Password Strength Indicator */}
                 {formData.password && (
-                  <div className="mt-3 space-y-2">
+                  <div className="mt-2 sm:mt-3 space-y-1.5 sm:space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-black/50">Password Strength:</span>
-                      <span className={`text-xs font-bold ${passwordStrength.textColor}`}>
+                      <span className="text-[0.65rem] sm:text-xs font-semibold text-black/50">Password Strength:</span>
+                      <span className={`text-[0.65rem] sm:text-xs font-bold ${passwordStrength.textColor}`}>
                         {passwordStrength.label}
                       </span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-black/5">
+                    <div className="h-1.5 sm:h-2 w-full overflow-hidden rounded-full bg-black/5">
                       <div
                         className={`h-full transition-all duration-300 ${passwordStrength.color}`}
                         style={{ width: `${passwordStrength.strength}%` }}
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 text-[0.65rem] sm:text-xs">
                       <div className={`flex items-center gap-1 ${formData.password.length >= 8 ? 'text-green-600' : 'text-black/40'}`}>
                         <span>{formData.password.length >= 8 ? '✓' : '○'}</span>
                         <span>8+ characters</span>
@@ -265,17 +265,17 @@ const SignUp = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.25em] text-black/40">
+                <label className="mb-2 block text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.25em] text-black/40">
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <FaLock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30" />
+                  <FaLock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black/30 text-xs sm:text-sm" />
                   <input
                     type="password"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full rounded-2xl border border-black/10 bg-white px-11 py-3 text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
+                    className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-9 sm:px-11 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
                     placeholder="Re-enter your password"
                     autoComplete='off'
                   />
@@ -285,13 +285,13 @@ const SignUp = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-200/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center rounded-xl sm:rounded-2xl bg-linear-to-r from-orange-500 via-orange-500 to-orange-600 px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-white transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-200/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? 'Creating account...' : 'Join now'}
               </button>
             </form>
 
-            <div className="mt-6 text-center text-sm text-black/60">
+            <div className="mt-5 sm:mt-6 text-center text-xs sm:text-sm text-black/60">
               Already on BharatConnect?
               <Link to="/sign-in" className="ml-2 font-semibold text-orange-600 transition hover:text-orange-500">
                 Sign in
