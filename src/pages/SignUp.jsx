@@ -102,9 +102,11 @@ const SignUp = () => {
           <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-orange-500/10" />
           <div className="relative">
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-xl font-bold text-white shadow-lg shadow-orange-500/25">
-                B
-              </span>
+              <img 
+                src="/favicon.png" 
+                alt="BharatConnect Logo" 
+                className="h-12 w-auto"
+              />
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-black/40">Create your profile</p>
                 <h2 className="text-2xl font-extrabold text-black">Join BharatConnect</h2>

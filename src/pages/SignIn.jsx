@@ -142,9 +142,11 @@ const SignIn = () => {
             <div className="absolute -right-24 -top-24 h-56 w-56 rounded-full bg-orange-200/40 blur-3xl" />
             <div className="relative">
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-xl font-bold text-white shadow-lg shadow-orange-500/25">
-                  B
-                </span>
+                <img 
+                  src="/favicon.png" 
+                  alt="BharatConnect Logo" 
+                  className="h-12 w-auto"
+                />
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">Access the circle</p>
                   <h2 className="text-2xl font-semibold text-slate-900">Sign in to BharatConnect</h2>

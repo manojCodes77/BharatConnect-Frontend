@@ -20,11 +20,12 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 border-b border-black/5 bg-white/80 backdrop-blur">
       <div className="max-w-[1120px] mx-auto px-[clamp(1.25rem,4vw,2.5rem)] flex h-16 md:h-20 items-center justify-between gap-3">
         <Link to="/" className="group flex items-center gap-3">
-          <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-white shadow-lg shadow-orange-500/40 transition-transform group-hover:-translate-y-1">
-            <span className="text-lg font-bold">B</span>
-            <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          </span>
-          <div className="flex flex-col">
+          <img 
+            src="/favicon.png" 
+            alt="BharatConnect" 
+            className="h-10 w-auto transition-transform group-hover:-translate-y-1"
+          />
+          <div className="hidden flex-col md:flex">
             <span className="text-xl font-extrabold text-black tracking-tight">BharatConnect</span>
             <span className="text-xs uppercase font-semibold tracking-[0.3em] text-black/50">Rise Together</span>
           </div>
