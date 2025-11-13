@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Timepass from "./pages/timepass";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -37,6 +38,7 @@ const App = () => {
           }
         />
         <Route path="/post/:id" element={<SinglePost />} />
+        <Route path="/timepass" element={<Timepass />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
