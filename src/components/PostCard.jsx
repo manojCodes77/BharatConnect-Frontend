@@ -345,6 +345,27 @@ const PostCard = ({ post, isMyPost = false }) => {
             <p className="text-sm leading-relaxed text-black/70 whitespace-pre-wrap wrap-break-word">
               {post.content}
             </p>
+            
+            {/* Display Post Images */}
+            {post.images && post.images.length > 0 && (
+              <div className={`grid gap-2 mt-3 ${
+                post.images.length === 1 ? 'grid-cols-1' :
+                post.images.length === 2 ? 'grid-cols-2' :
+                post.images.length === 3 ? 'grid-cols-3' :
+                'grid-cols-2'
+              }`}>
+                {post.images.map((image, index) => (
+                  <div key={index} className="relative overflow-hidden rounded-xl">
+                    <img
+                      src={image.url}
+                      alt={`Post image ${index + 1}`}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      style={{ maxHeight: post.images.length === 1 ? '400px' : '200px' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

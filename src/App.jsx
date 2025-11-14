@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "./store/authSlice";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
@@ -16,6 +17,20 @@ import Timepass from "./pages/timepass";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  // Listen for authentication errors (token expiration)
+  useEffect(() => {
+    const handleAuthLogout = () => {
+      dispatch(logout());
+    };
+
+    window.addEventListener('auth:logout', handleAuthLogout);
+
+    return () => {
+      window.removeEventListener('auth:logout', handleAuthLogout);
+    };
+  }, [dispatch]);
 
   return (
     <Router>

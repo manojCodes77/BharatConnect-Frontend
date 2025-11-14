@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
+
 const ImageUpload = ({ onImageUpload }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -26,7 +28,7 @@ const ImageUpload = ({ onImageUpload }) => {
             const token = localStorage.getItem('token'); // Your auth token
 
             const response = await axios.post(
-                'http://localhost:8080/api/upload/image',
+                `${API_BASE_URL}/upload/image`,
                 formData,
                 {
                     headers: {

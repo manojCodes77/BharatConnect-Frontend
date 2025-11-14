@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createPost, getAllPosts } from '../utils/api';
 import { setPosts } from '../store/postsSlice';
-import { FaImage, FaVideo, FaCalendar, FaPen } from 'react-icons/fa';
+import { FaImage, FaVideo, FaCalendar, FaPen, FaTimes } from 'react-icons/fa';
 
 const CreatePost = () => {
   const [showForm, setShowForm] = useState(false);
@@ -10,6 +10,8 @@ const CreatePost = () => {
     title: '',
     content: '',
   });
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -31,6 +33,30 @@ const CreatePost = () => {
     });
   };
 
+  const handleImageSelect = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length + selectedImages.length > 5) {
+      setError('You can only upload up to 5 images');
+      return;
+    }
+
+    setSelectedImages((prev) => [...prev, ...files]);
+
+    // Create preview URLs
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviews((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleRemoveImage = (index) => {
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -42,12 +68,25 @@ const CreatePost = () => {
 
     try {
       setLoading(true);
-      const response = await createPost(formData);
+      
+      // Create FormData for multipart upload
+      const submitData = new FormData();
+      submitData.append('title', formData.title);
+      submitData.append('content', formData.content);
+      
+      // Append images if any
+      selectedImages.forEach((image) => {
+        submitData.append('images', image);
+      });
+
+      const response = await createPost(submitData);
 
       if (response.success) {
         const refreshedPosts = await getAllPosts();
         dispatch(setPosts(refreshedPosts));
         setFormData({ title: '', content: '' });
+        setSelectedImages([]);
+        setImagePreviews([]);
         setShowForm(false);
       } else {
         setError(response.message || 'Failed to create post');
@@ -117,11 +156,46 @@ const CreatePost = () => {
               rows="5"
               className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
             ></textarea>
+
+            {/* Image Previews */}
+            {imagePreviews.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={preview}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-xl border border-black/10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute top-2 right-2 rounded-full bg-red-500 p-1.5 text-white opacity-0 transition group-hover:opacity-100 hover:bg-red-600"
+                    >
+                      <FaTimes className="text-xs" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              {quickActions.map((action) => (
+              {/* Image Upload Button */}
+              <label className="inline-flex items-center gap-2 rounded-full border border-black/10 px-3 py-2 text-xs font-semibold text-black/60 transition hover:border-orange-400/60 hover:bg-orange-500/5 hover:text-black cursor-pointer">
+                <FaImage className="text-orange-500" />
+                <span>Add visuals</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageSelect}
+                  className="hidden"
+                  disabled={selectedImages.length >= 5}
+                />
+              </label>
+              {quickActions.slice(1).map((action) => (
                 <button
                   key={action.label}
                   type="button"
@@ -139,6 +213,8 @@ const CreatePost = () => {
                 onClick={() => {
                   setShowForm(false);
                   setFormData({ title: '', content: '' });
+                  setSelectedImages([]);
+                  setImagePreviews([]);
                   setError('');
                 }}
                 className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold text-black/60 transition hover:bg-black/5"

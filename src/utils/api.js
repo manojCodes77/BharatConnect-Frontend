@@ -23,6 +23,24 @@ api.interceptors.request.use(
   }
 );
 
+// Handle response errors (token expiration)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Check if error is 401 (Unauthorized) - token expired or invalid
+    if (error.response && error.response.status === 401) {
+      // Clear localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      // Dispatch logout action if store is available
+      // We'll handle this in App.jsx to avoid circular dependencies
+      window.dispatchEvent(new CustomEvent('auth:logout'));
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Auth APIs
 export const signUp = async (userData) => {
   const response = await api.post('/users/sign-up', userData);
@@ -46,7 +64,14 @@ export const getAllUsers = async () => {
 
 // Post APIs
 export const createPost = async (postData) => {
-  const response = await api.post('/posts', postData);
+  // Check if postData is FormData (for image uploads)
+  const isFormData = postData instanceof FormData;
+  
+  const response = await api.post('/posts', postData, {
+    headers: isFormData ? {
+      'Content-Type': 'multipart/form-data',
+    } : undefined,
+  });
   return response.data;
 };
 
