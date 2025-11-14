@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { signIn } from '../utils/api';
 import { loginStart, loginSuccess, loginFailure } from '../store/authSlice';
 import { FaEnvelope, FaLock, FaRegLightbulb, FaUsers, FaHandshake } from 'react-icons/fa';
@@ -28,7 +29,7 @@ const SignIn = () => {
     setError('');
     
     if (!formData.email || !formData.password) {
-      setError('All fields are required');
+      toast.error('All fields are required');
       return;
     }
 
@@ -38,14 +39,15 @@ const SignIn = () => {
       
       if (response.success) {
         dispatch(loginSuccess({ token: response.token, user: response.user }));
+        toast.success(`Welcome back, ${response.user.name}!`);
         navigate('/');
       } else {
-        setError(response.message || 'Failed to sign in');
+        toast.error(response.message || 'Failed to sign in');
         dispatch(loginFailure(response.message));
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Failed to sign in';
-      setError(errorMessage);
+      toast.error(errorMessage);
       dispatch(loginFailure(errorMessage));
     }
   };

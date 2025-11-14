@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { signUp } from '../utils/api';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 
@@ -62,17 +63,17 @@ const SignUp = () => {
     setError('');
     
     if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      setError('All fields are required');
+      toast.error('All fields are required');
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
 
@@ -87,21 +88,23 @@ const SignUp = () => {
         if (response.token && response.user) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user));
+          toast.success('Account created successfully! Welcome to BharatConnect!');
           // Redirect to home instead of sign-in
           navigate('/');
         } else {
           // Old behavior: redirect to sign-in
           setSuccess(true);
+          toast.success('Account created! Redirecting to sign in...');
           setTimeout(() => {
             navigate('/sign-in');
           }, 2000);
         }
       } else {
-        setError(response.message || 'Failed to sign up');
+        toast.error(response.message || 'Failed to sign up');
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Failed to sign up';
-      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

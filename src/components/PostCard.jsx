@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import {
   deletePost as deletePostAPI,
   updatePost as updatePostAPI,
@@ -90,10 +91,11 @@ const PostCard = ({ post, isMyPost = false }) => {
         const response = await deletePostAPI(post._id);
         if (response.success) {
           dispatch(deletePost(post._id));
+          toast.success('Post deleted successfully');
         }
       } catch (error) {
         console.error("Failed to delete post:", error);
-        alert("Failed to delete post");
+        toast.error("Failed to delete post");
       } finally {
         setLoading(false);
       }
@@ -103,7 +105,7 @@ const PostCard = ({ post, isMyPost = false }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!editData.title || !editData.content) {
-      alert("Title and content are required");
+      toast.error("Title and content are required");
       return;
     }
 
@@ -118,11 +120,12 @@ const PostCard = ({ post, isMyPost = false }) => {
             updatedAt: new Date().toISOString(),
           })
         );
+        toast.success('Post updated successfully');
         setIsEditing(false);
       }
     } catch (error) {
       console.error("Failed to update post:", error);
-      alert("Failed to update post");
+      toast.error("Failed to update post");
     } finally {
       setLoading(false);
     }
@@ -166,6 +169,7 @@ const PostCard = ({ post, isMyPost = false }) => {
           setLocalComments((prev) => [...prev, response.comment]);
           setLocalCommentsCount(response.commentsCount);
           setCommentText("");
+          toast.success('Comment posted');
           dispatch(
             updatePostInteraction({
               postId: post._id,
@@ -178,7 +182,7 @@ const PostCard = ({ post, isMyPost = false }) => {
         }
       } catch (error) {
         console.error("Failed to comment:", error);
-        alert("Failed to post comment");
+        toast.error("Failed to post comment");
       }
     });
   };
@@ -217,11 +221,11 @@ const PostCard = ({ post, isMyPost = false }) => {
               updates: { sharesCount: response.sharesCount },
             })
           );
-          alert("Link copied to clipboard!");
+          toast.success("Link copied to clipboard!");
         }
       } catch (error) {
         console.error("Failed to share post:", error);
-        alert("Failed to share post");
+        toast.error("Failed to share post");
       }
     });
   };

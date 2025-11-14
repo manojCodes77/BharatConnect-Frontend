@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { createPost, getAllPosts } from '../utils/api';
 import { setPosts } from '../store/postsSlice';
 import { FaImage, FaVideo, FaCalendar, FaPen, FaTimes } from 'react-icons/fa';
@@ -36,7 +37,7 @@ const CreatePost = () => {
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
     if (files.length + selectedImages.length > 5) {
-      setError('You can only upload up to 5 images');
+      toast.warning('You can only upload up to 5 images');
       return;
     }
 
@@ -62,7 +63,7 @@ const CreatePost = () => {
     setError('');
 
     if (!formData.title || !formData.content) {
-      setError('Title and content are required');
+      toast.error('Title and content are required');
       return;
     }
 
@@ -84,15 +85,16 @@ const CreatePost = () => {
       if (response.success) {
         const refreshedPosts = await getAllPosts();
         dispatch(setPosts(refreshedPosts));
+        toast.success('Post published successfully!');
         setFormData({ title: '', content: '' });
         setSelectedImages([]);
         setImagePreviews([]);
         setShowForm(false);
       } else {
-        setError(response.message || 'Failed to create post');
+        toast.error(response.message || 'Failed to create post');
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Failed to create post');
+      toast.error(error.response?.data?.message || 'Failed to create post');
     } finally {
       setLoading(false);
     }
