@@ -101,7 +101,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
+    <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
       {!showForm ? (
         <div className="flex flex-col gap-5">
           <div className="flex items-start justify-between gap-4">

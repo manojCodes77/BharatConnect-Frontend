@@ -15,23 +15,33 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
 import ProtectedRoute from "./components/ProtectedRoute";
+import axios from "axios";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
-  // Listen for authentication errors (token expiration)
   useEffect(() => {
-    const handleAuthLogout = () => {
-      dispatch(logout());
+    const validateToken = async () => {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        try {
+          // Call a lightweight endpoint to verify token
+          await axios.post(`${API_BASE_URL}/auth`, {}, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        } catch (error) {
+          // Token invalid, clear everything
+          dispatch(logout());
+          localStorage.removeItem('token');
+        }
+      }
     };
 
-    window.addEventListener('auth:logout', handleAuthLogout);
-
-    return () => {
-      window.removeEventListener('auth:logout', handleAuthLogout);
-    };
-  }, [dispatch]);
+    validateToken();
+  }, []);
 
   return (
     <>

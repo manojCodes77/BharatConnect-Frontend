@@ -246,7 +246,7 @@ const PostCard = ({ post, isMyPost = false }) => {
   };
 
   return (
-    <article className="bg-white border border-black/[0.08] rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] mb-4 sm:mb-6 overflow-hidden">
+    <article className="bg-white border border-black/8 rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] mb-4 sm:mb-6 overflow-hidden">
       <div className="h-1 bg-linear-to-r from-orange-500 via-orange-400 to-orange-600" />
       <div className="p-4 sm:p-6">
         <header className="mb-4 sm:mb-5 flex items-start justify-between gap-2 sm:gap-4">
