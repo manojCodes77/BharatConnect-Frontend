@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../store/authSlice";
-import { FaHome, FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import { FaHome, FaUser, FaSignOutAlt, FaBars, FaTimes, FaBookmark } from "react-icons/fa";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -51,6 +51,16 @@ const Navbar = () => {
               >
                 <FaHome className="text-base" />
                 <span>Pulse</span>
+              </Link>
+              <Link
+                to="/saved"
+                className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${isActive("/saved")
+                    ? "bg-black text-white shadow-md"
+                    : "text-black/60 hover:bg-black/5"
+                  }`}
+              >
+                <FaBookmark className="text-base" />
+                <span>Saved</span>
               </Link>
               <Link
                 to="/profile"
@@ -132,6 +142,17 @@ const Navbar = () => {
                 >
                   <FaHome className="text-base" />
                   <span>Pulse</span>
+                </Link>
+                <Link
+                  to="/saved"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${isActive("/saved")
+                      ? "bg-black text-white shadow-md"
+                      : "text-black/60 hover:bg-black/5"
+                    }`}
+                >
+                  <FaBookmark className="text-base" />
+                  <span>Saved Posts</span>
                 </Link>
                 <Link
                   to="/profile"

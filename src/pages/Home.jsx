@@ -178,7 +178,7 @@ const Home = () => {
                 <p className="text-sm">{error}</p>
               </div>
             ) : posts.length === 0 ? (
-              <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
+              <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-orange-500/10 text-3xl">🪄</div>
                 <h3 className="mt-6 text-xl font-semibold text-black">No stories yet</h3>
                 <p className="mt-2 text-sm text-black/60">Spark the first conversation and invite others to follow.</p>

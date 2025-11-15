@@ -13,6 +13,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import SavedPosts from "./pages/SavedPosts";
 import SinglePost from "./pages/SinglePost";
 import ProtectedRoute from "./components/ProtectedRoute";
 import axios from "axios";
@@ -72,6 +73,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/saved"
+            element={
+              <ProtectedRoute>
+                <SavedPosts />
               </ProtectedRoute>
             }
           />

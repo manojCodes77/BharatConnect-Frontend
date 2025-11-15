@@ -123,4 +123,9 @@ export const sharePost = async (postId) => {
   return response.data;
 };
 
+export const getAllSavedPosts = async () => {
+  const response = await api.get('/posts/saved');
+  return response.data.savedPosts || [];
+};
+
 export default api;

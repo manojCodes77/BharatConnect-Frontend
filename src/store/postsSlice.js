@@ -5,6 +5,7 @@ const postsSlice = createSlice({
   initialState: {
     posts: [],
     myPosts: [],
+    savedPosts: [],
     loading: false,
     error: null,
     nextCursor: null,
@@ -30,6 +31,11 @@ const postsSlice = createSlice({
     },
     setMyPosts: (state, action) => {
       state.myPosts = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    setSavedPosts: (state, action) => {
+      state.savedPosts = action.payload;
       state.loading = false;
       state.error = null;
     },
@@ -68,5 +74,5 @@ const postsSlice = createSlice({
   },
 });
 
-export const { setLoading, setPosts, appendPosts, setMyPosts, addPost, updatePost, deletePost, updatePostInteraction, setError } = postsSlice.actions;
+export const { setLoading, setPosts, appendPosts, setMyPosts, setSavedPosts, addPost, updatePost, deletePost, updatePostInteraction, setError } = postsSlice.actions;
 export default postsSlice.reducer;
