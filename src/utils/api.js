@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { logout } from '../store/authSlice';
+import { store } from '../store/store';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
@@ -27,15 +29,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Check if error is 403 (Unauthorized) - token expired or invalid
-    if (error.response && error.response.status === 403) {
-      // Clear localStorage
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      
-      // Dispatch logout action if store is available
-      // We'll handle this in App.jsx to avoid circular dependencies
-      window.dispatchEvent(new CustomEvent('auth:logout'));
+    // Check if error is 401 (Unauthorized) - token expired or invalid
+    if (error.response && error.response.status === 401) {
+      // Use store.dispatch directly instead of useDispatch hook
+      store.dispatch(logout());
+      window.location.href = '/sign-in';
     }
     return Promise.reject(error);
   }

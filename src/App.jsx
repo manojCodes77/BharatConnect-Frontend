@@ -35,7 +35,6 @@ const App = () => {
         } catch (error) {
           // Token invalid, clear everything
           dispatch(logout());
-          localStorage.removeItem('token');
         }
       }
     };
