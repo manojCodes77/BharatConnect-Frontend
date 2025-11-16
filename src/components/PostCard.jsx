@@ -260,257 +260,390 @@ const PostCard = ({ post, isMyPost = false }) => {
       )}
 
       <article className="bg-white border border-black/8 rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] mb-4 sm:mb-6 overflow-hidden">
-      <div className="h-1 bg-linear-to-r from-orange-500 via-orange-400 to-orange-600" />
-      <div className="p-4 sm:p-6">
-        <header className="mb-4 sm:mb-5 flex items-start justify-between gap-2 sm:gap-4">
-          <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-            <span className="relative inline-flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-base sm:text-lg font-bold text-white shadow-lg shadow-orange-500/30">
-              {post.authorId?.name?.charAt(0).toUpperCase() || "U"}
-              <span className="absolute -bottom-1 -right-1 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full border border-white bg-emerald-400" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <h3 className="text-sm sm:text-base font-semibold text-black truncate">
-                {post.authorId?.name || "Unknown User"}
-              </h3>
-              <p className="mt-1 text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.25em] text-black/40">
-                {formatDate(post.createdAt)}
-              </p>
+        <div className="h-1 bg-linear-to-r from-orange-500 via-orange-400 to-orange-600" />
+        <div className="p-4 sm:p-6">
+          <header className="mb-4 sm:mb-5 flex items-start justify-between gap-2 sm:gap-4">
+            <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+              <span className="relative inline-flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-linear-to-br from-orange-400 to-orange-600 text-base sm:text-lg font-bold text-white shadow-lg shadow-orange-500/30">
+                {post.authorId?.name?.charAt(0).toUpperCase() || "U"}
+                <span className="absolute -bottom-1 -right-1 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full border border-white bg-emerald-400" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm sm:text-base font-semibold text-black truncate">
+                  {post.authorId?.name || "Unknown User"}
+                </h3>
+                <p className="mt-1 text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.25em] text-black/40">
+                  {formatDate(post.createdAt)}
+                </p>
+              </div>
             </div>
-          </div>
 
-          {isMyPost && (
-            <div className="relative shrink-0">
-              <button
-                onClick={() => setShowMenu(!showMenu)}
-                className="rounded-full border border-black/10 p-1.5 sm:p-2 text-black/40 transition hover:border-orange-400/60 hover:text-black"
-                aria-haspopup="menu"
-                aria-expanded={showMenu}
-              >
-                <FaEllipsisH className="text-sm sm:text-base" />
-              </button>
-
-              {showMenu && (
-                <div
-                  className="absolute right-0 mt-2 sm:mt-3 w-44 sm:w-48 overflow-hidden rounded-xl sm:rounded-2xl border border-black/5 bg-white shadow-xl z-10"
-                  role="menu"
+            {isMyPost && (
+              <div className="relative shrink-0">
+                <button
+                  onClick={() => setShowMenu(!showMenu)}
+                  className="rounded-full border border-black/10 p-1.5 sm:p-2 text-black/40 transition hover:border-orange-400/60 hover:text-black"
+                  aria-haspopup="menu"
+                  aria-expanded={showMenu}
                 >
-                  <button
-                    onClick={() => {
-                      setIsEditing(true);
-                      setShowMenu(false);
-                    }}
-                    className="flex w-full items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-black/70 transition hover:bg-orange-500/5"
+                  <FaEllipsisH className="text-sm sm:text-base" />
+                </button>
+
+                {showMenu && (
+                  <div
+                    className="absolute right-0 mt-2 sm:mt-3 w-44 sm:w-48 overflow-hidden rounded-xl sm:rounded-2xl border border-black/5 bg-white shadow-xl z-10"
+                    role="menu"
                   >
-                    <FaEdit className="text-orange-500" />
-                    <span>Edit story</span>
-                  </button>
-                  <button
-                    onClick={handleDelete}
-                    disabled={loading}
-                    className="flex w-full items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-red-600 transition hover:bg-red-50"
-                  >
-                    <FaTrash />
-                    <span>{loading ? "Deleting..." : "Remove"}</span>
-                  </button>
+                    <button
+                      onClick={() => {
+                        setIsEditing(true);
+                        setShowMenu(false);
+                      }}
+                      className="flex w-full items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-black/70 transition hover:bg-orange-500/5"
+                    >
+                      <FaEdit className="text-orange-500" />
+                      <span>Edit story</span>
+                    </button>
+                    <button
+                      onClick={handleDelete}
+                      disabled={loading}
+                      className="flex w-full items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                    >
+                      <FaTrash />
+                      <span>{loading ? "Deleting..." : "Remove"}</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </header>
+
+          {isEditing ? (
+            <form onSubmit={handleUpdate} className="space-y-3">
+              <input
+                type="text"
+                value={editData.title}
+                onChange={(e) =>
+                  setEditData({ ...editData, title: e.target.value })
+                }
+                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-lg font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
+              />
+              <textarea
+                value={editData.content}
+                onChange={(e) =>
+                  setEditData({ ...editData, content: e.target.value })
+                }
+                rows="4"
+                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
+              ></textarea>
+              <div className="flex gap-3">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="rounded-full bg-black px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-black/90 disabled:translate-y-0 disabled:opacity-50"
+                >
+                  {loading ? "Saving..." : "Save changes"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditData({ title: post.title, content: post.content });
+                  }}
+                  className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold text-black/60 transition hover:bg-black/5"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div onClick={handlePostClick} className="space-y-2 sm:space-y-3 cursor-pointer">
+              <h2 className="text-lg sm:text-xl font-semibold text-black wrap-break-word">{post.title}</h2>
+              <p className="text-sm leading-relaxed text-black/70 whitespace-pre-wrap wrap-break-word">
+                {post.content}
+              </p>
+
+              {/* Display Post Images */}
+              {post.images && post.images.length > 0 && (
+                <div className="-mx-4 sm:-mx-6 mt-3">
+                  {/* Single Image */}
+                  {post.images.length === 1 && (
+                    <div
+                      className="relative overflow-hidden cursor-pointer group"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedImageIndex(0);
+                        setShowSlideshow(true);
+                      }}
+                    >
+                      <img
+                        src={post.images[0].url}
+                        alt="Post image"
+                        className="w-full object-cover group-hover:opacity-95 transition-opacity duration-200"
+                        style={{ maxHeight: '500px' }}
+                      />
+                      {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
+                     */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                        <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">
+                          View
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Two Images */}
+                  {post.images.length === 2 && (
+                    <div className="grid grid-cols-2 gap-0.5">
+                      {post.images.map((image, index) => (
+                        <div
+                          key={index}
+                          className="relative overflow-hidden cursor-pointer group"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImageIndex(index);
+                            setShowSlideshow(true);
+                          }}
+                        >
+                          <img
+                            src={image.url}
+                            alt={`Post image ${index + 1}`}
+                            className="w-full h-full object-cover group-hover:opacity-95 transition-opacity duration-200"
+                            style={{ height: '280px' }}
+                          />
+                          {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" /> */}
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                            <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">
+                              View
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Three Images */}
+                  {post.images.length === 3 && (
+                    <div className="grid grid-cols-2 gap-0.5">
+                      <div
+                        className="relative overflow-hidden cursor-pointer group row-span-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImageIndex(0);
+                          setShowSlideshow(true);
+                        }}
+                      >
+                        <img
+                          src={post.images[0].url}
+                          alt="Post image 1"
+                          className="w-full h-full object-cover group-hover:opacity-95 transition-opacity duration-200"
+                          style={{ height: '100%', minHeight: '280px' }}
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
+                      </div>
+                      {post.images.slice(1, 3).map((image, index) => (
+                        <div
+                          key={index + 1}
+                          className="relative overflow-hidden cursor-pointer group"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImageIndex(index + 1);
+                            setShowSlideshow(true);
+                          }}
+                        >
+                          <img
+                            src={image.url}
+                            alt={`Post image ${index + 2}`}
+                            className="w-full h-full object-cover group-hover:opacity-95 transition-opacity duration-200"
+                            style={{ height: '140px' }}
+                          />
+                          {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
+                           */}
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                            <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">
+                              View
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Four Images */}
+                  {post.images.length === 4 && (
+                    <div className="grid grid-cols-2 gap-0.5">
+                      {post.images.map((image, index) => (
+                        <div
+                          key={index}
+                          className="relative overflow-hidden cursor-pointer group"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImageIndex(index);
+                            setShowSlideshow(true);
+                          }}
+                        >
+                          <img
+                            src={image.url}
+                            alt={`Post image ${index + 1}`}
+                            className="w-full h-full object-cover group-hover:opacity-95 transition-opacity duration-200"
+                            style={{ height: '200px' }}
+                          />
+                          {/* <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" /> */}
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                            <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">
+                              View
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Five or More Images */}
+                  {post.images.length >= 5 && (
+                    <div className="grid grid-cols-2 gap-0.5">
+                      {post.images.slice(0, 4).map((image, index) => (
+                        <div
+                          key={index}
+                          className="relative overflow-hidden cursor-pointer group"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImageIndex(index);
+                            setShowSlideshow(true);
+                          }}
+                        >
+                          <img
+                            src={image.url}
+                            alt={`Post image ${index + 1}`}
+                            className="w-full h-full object-cover group-hover:opacity-95 transition-opacity duration-200"
+                            style={{ height: '200px' }}
+                          />
+                          {index === 3 && post.images.length > 4 && (
+                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                              <span className="text-white text-3xl font-bold">
+                                +{post.images.length - 4}
+                              </span>
+                            </div>
+                          )}
+                          
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
           )}
-        </header>
-
-        {isEditing ? (
-          <form onSubmit={handleUpdate} className="space-y-3">
-            <input
-              type="text"
-              value={editData.title}
-              onChange={(e) =>
-                setEditData({ ...editData, title: e.target.value })
-              }
-              className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-lg font-semibold text-black/80 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
-            />
-            <textarea
-              value={editData.content}
-              onChange={(e) =>
-                setEditData({ ...editData, content: e.target.value })
-              }
-              rows="4"
-              className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
-            ></textarea>
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                disabled={loading}
-                className="rounded-full bg-black px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-black/90 disabled:translate-y-0 disabled:opacity-50"
-              >
-                {loading ? "Saving..." : "Save changes"}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditData({ title: post.title, content: post.content });
-                }}
-                className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold text-black/60 transition hover:bg-black/5"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div onClick={handlePostClick} className="space-y-2 sm:space-y-3 cursor-pointer">
-            <h2 className="text-lg sm:text-xl font-semibold text-black wrap-break-word">{post.title}</h2>
-            <p className="text-sm leading-relaxed text-black/70 whitespace-pre-wrap wrap-break-word">
-              {post.content}
-            </p>
-            
-            {/* Display Post Images */}
-            {post.images && post.images.length > 0 && (
-              <div className={`grid gap-2 mt-3 ${
-                post.images.length === 1 ? 'grid-cols-1' :
-                post.images.length === 2 ? 'grid-cols-2' :
-                post.images.length === 3 ? 'grid-cols-3' :
-                'grid-cols-2'
-              }`}>
-                {post.images.map((image, index) => (
-                  <div 
-                    key={index} 
-                    className="relative overflow-hidden rounded-xl cursor-pointer group"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedImageIndex(index);
-                      setShowSlideshow(true);
-                    }}
-                  >
-                    <img
-                      src={image.url}
-                      alt={`Post image ${index + 1}`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      style={{ maxHeight: post.images.length === 1 ? '400px' : '200px' }}
-                    />
-                    {/* Overlay on hover */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">
-                        View
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      <footer className="border-t border-black/5 bg-black/5">
-        <div className="flex flex-wrap items-center justify-center sm:justify-between gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-black/50">
-          <button
-            onClick={handleLike}
-            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition ${
-              liked ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
-            }`}
-          >
-            <FaHeart className={`text-xs sm:text-sm ${liked ? "text-orange-500" : ""}`} />
-            <span>{localLikesCount > 0 ? `${localLikesCount}` : "Like"}</span>
-          </button>
-          <button
-            onClick={() => setShowComments(!showComments)}
-            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition hover:bg-black/5"
-          >
-            <FaComment className="text-xs sm:text-sm" />
-            <span>
-              {localCommentsCount > 0 ? `${localCommentsCount}` : "Comment"}
-            </span>
-          </button>
-          <button
-            onClick={handleShare}
-            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition hover:bg-black/5"
-          >
-            <FaShare className="text-xs sm:text-sm" />
-            <span>
-              {localSharesCount > 0 ? `${localSharesCount}` : "Share"}
-            </span>
-          </button>
-          <button
-            onClick={handleSave}
-            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-1.5 sm:py-2 transition ${
-              saved ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
-            }`}
-          >
-            <FaBookmark className="text-xs sm:text-sm" />
-            <span className="hidden sm:inline">Save</span>
-          </button>
         </div>
 
-        {/* Comments Section */}
-        {showComments && (
-          <div className="border-t border-black/5 bg-white px-4 sm:px-6 py-3 sm:py-4">
-            {/* Comment Input */}
-            {isAuthenticated ? (
-              <form onSubmit={handleComment} className="mb-4">
-                <textarea
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  placeholder="Write a comment... (use @name to mention someone)"
-                  rows="2"
-                  className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)] resize-none"
-                />
-                <div className="mt-2 flex justify-end">
-                  <button
-                    type="submit"
-                    disabled={!commentText.trim()}
-                    className="rounded-full bg-orange-500 px-4 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Post
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="mb-4 rounded-xl sm:rounded-2xl bg-orange-500/5 p-3 sm:p-4 text-center">
-                <p className="text-xs sm:text-sm text-black/60">
-                  <button
-                    onClick={() => navigate("/sign-in")}
-                    className="font-semibold text-orange-600 hover:underline"
-                  >
-                    Sign in
-                  </button>{" "}
-                  to comment on this post
-                </p>
-              </div>
-            )}
+        <footer className="border-t border-black/5 bg-black/5">
+          <div className="flex flex-wrap items-center justify-center sm:justify-between gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-black/50">
+            <button
+              onClick={handleLike}
+              className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition ${liked ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
+                }`}
+            >
+              <FaHeart className={`text-xs sm:text-sm ${liked ? "text-orange-500" : ""}`} />
+              <span>{localLikesCount > 0 ? `${localLikesCount}` : "Like"}</span>
+            </button>
+            <button
+              onClick={() => setShowComments(!showComments)}
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition hover:bg-black/5"
+            >
+              <FaComment className="text-xs sm:text-sm" />
+              <span>
+                {localCommentsCount > 0 ? `${localCommentsCount}` : "Comment"}
+              </span>
+            </button>
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition hover:bg-black/5"
+            >
+              <FaShare className="text-xs sm:text-sm" />
+              <span>
+                {localSharesCount > 0 ? `${localSharesCount}` : "Share"}
+              </span>
+            </button>
+            <button
+              onClick={handleSave}
+              className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-2 sm:px-3 py-1.5 sm:py-2 transition ${saved ? "bg-orange-500/10 text-orange-600" : "hover:bg-black/5"
+                }`}
+            >
+              <FaBookmark className="text-xs sm:text-sm" />
+              <span className="hidden sm:inline">Save</span>
+            </button>
+          </div>
 
-            {/* Comments List */}
-            <div className="space-y-3 sm:space-y-4">
-              {localComments.length === 0 ? (
-                <p className="text-center text-xs sm:text-sm text-black/40">
-                  No comments yet. Be the first!
-                </p>
+          {/* Comments Section */}
+          {showComments && (
+            <div className="border-t border-black/5 bg-white px-4 sm:px-6 py-3 sm:py-4">
+              {/* Comment Input */}
+              {isAuthenticated ? (
+                <form onSubmit={handleComment} className="mb-4">
+                  <textarea
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    placeholder="Write a comment... (use @name to mention someone)"
+                    rows="2"
+                    className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)] resize-none"
+                  />
+                  <div className="mt-2 flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={!commentText.trim()}
+                      className="rounded-full bg-orange-500 px-4 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Post
+                    </button>
+                  </div>
+                </form>
               ) : (
-                localComments.map((comment, index) => (
-                  <div key={index} className="flex gap-2 sm:gap-3">
-                    <span className="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-xs sm:text-sm font-bold text-orange-600">
-                      {comment.userId?.name?.charAt(0).toUpperCase() || "U"}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <div className="rounded-xl sm:rounded-2xl bg-black/5 px-3 sm:px-4 py-2 sm:py-3">
-                        <p className="text-xs sm:text-sm font-semibold text-black">
-                          {comment.userId?.name || "Unknown User"}
-                        </p>
-                        <p className="mt-1 text-xs sm:text-sm text-black/70 wrap-break-word">
-                          {highlightMentions(comment.text)}
+                <div className="mb-4 rounded-xl sm:rounded-2xl bg-orange-500/5 p-3 sm:p-4 text-center">
+                  <p className="text-xs sm:text-sm text-black/60">
+                    <button
+                      onClick={() => navigate("/sign-in")}
+                      className="font-semibold text-orange-600 hover:underline"
+                    >
+                      Sign in
+                    </button>{" "}
+                    to comment on this post
+                  </p>
+                </div>
+              )}
+
+              {/* Comments List */}
+              <div className="space-y-3 sm:space-y-4">
+                {localComments.length === 0 ? (
+                  <p className="text-center text-xs sm:text-sm text-black/40">
+                    No comments yet. Be the first!
+                  </p>
+                ) : (
+                  localComments.map((comment, index) => (
+                    <div key={index} className="flex gap-2 sm:gap-3">
+                      <span className="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-xs sm:text-sm font-bold text-orange-600">
+                        {comment.userId?.name?.charAt(0).toUpperCase() || "U"}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <div className="rounded-xl sm:rounded-2xl bg-black/5 px-3 sm:px-4 py-2 sm:py-3">
+                          <p className="text-xs sm:text-sm font-semibold text-black">
+                            {comment.userId?.name || "Unknown User"}
+                          </p>
+                          <p className="mt-1 text-xs sm:text-sm text-black/70 wrap-break-word">
+                            {highlightMentions(comment.text)}
+                          </p>
+                        </div>
+                        <p className="mt-1 px-3 sm:px-4 text-[0.65rem] sm:text-xs text-black/40">
+                          {formatDate(comment.createdAt)}
                         </p>
                       </div>
-                      <p className="mt-1 px-3 sm:px-4 text-[0.65rem] sm:text-xs text-black/40">
-                        {formatDate(comment.createdAt)}
-                      </p>
                     </div>
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
-          </div>
-        )}
-      </footer>
-    </article>
+          )}
+        </footer>
+      </article>
     </>
   );
 };

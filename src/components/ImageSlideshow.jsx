@@ -42,7 +42,7 @@ const ImageSlideshow = ({ images, initialIndex = 0, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+      className="fixed h-screen inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
       {/* Close Button */}
