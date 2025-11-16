@@ -24,6 +24,7 @@ import {
   FaHeart,
   FaBookmark,
 } from "react-icons/fa";
+import ImageSlideshow from "./ImageSlideshow";
 
 const PostCard = ({ post, isMyPost = false }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -45,6 +46,8 @@ const PostCard = ({ post, isMyPost = false }) => {
     post.sharesCount || 0
   );
   const [localComments, setLocalComments] = useState(post.comments || []);
+  const [showSlideshow, setShowSlideshow] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -246,7 +249,17 @@ const PostCard = ({ post, isMyPost = false }) => {
   };
 
   return (
-    <article className="bg-white border border-black/8 rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] mb-4 sm:mb-6 overflow-hidden">
+    <>
+      {/* Image Slideshow Modal */}
+      {showSlideshow && post.images && post.images.length > 0 && (
+        <ImageSlideshow
+          images={post.images}
+          initialIndex={selectedImageIndex}
+          onClose={() => setShowSlideshow(false)}
+        />
+      )}
+
+      <article className="bg-white border border-black/8 rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] mb-4 sm:mb-6 overflow-hidden">
       <div className="h-1 bg-linear-to-r from-orange-500 via-orange-400 to-orange-600" />
       <div className="p-4 sm:p-6">
         <header className="mb-4 sm:mb-5 flex items-start justify-between gap-2 sm:gap-4">
@@ -359,13 +372,27 @@ const PostCard = ({ post, isMyPost = false }) => {
                 'grid-cols-2'
               }`}>
                 {post.images.map((image, index) => (
-                  <div key={index} className="relative overflow-hidden rounded-xl">
+                  <div 
+                    key={index} 
+                    className="relative overflow-hidden rounded-xl cursor-pointer group"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedImageIndex(index);
+                      setShowSlideshow(true);
+                    }}
+                  >
                     <img
                       src={image.url}
                       alt={`Post image ${index + 1}`}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       style={{ maxHeight: post.images.length === 1 ? '400px' : '200px' }}
                     />
+                    {/* Overlay on hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">
+                        View
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -484,6 +511,7 @@ const PostCard = ({ post, isMyPost = false }) => {
         )}
       </footer>
     </article>
+    </>
   );
 };
 
