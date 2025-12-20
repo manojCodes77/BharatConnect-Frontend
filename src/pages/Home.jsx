@@ -1,26 +1,24 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Layout from '../components/Layout';
-import CreatePost from '../components/CreatePost';
-import PostCard from '../components/PostCard';
-import { getAllPosts } from '../utils/api';
-import { setPosts, appendPosts, setLoading, setError } from '../store/postsSlice';
+import { useEffect, useState } from 'react';
 import { FaFire, FaTrophy, FaUsers } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import CreatePost from '../components/CreatePost';
+import Layout from '../components/Layout';
+import PostCard from '../components/PostCard';
+import { setError, setLoading, setPosts } from '../store/postsSlice';
+import { getAllPosts } from '../utils/api';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { posts, loading, error, nextCursor, hasMore } = useSelector((state) => state.posts);
+  const { posts, loading, error } = useSelector((state) => state.posts);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const [localLoading, setLocalLoading] = useState(true);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const observerTarget = useRef(null);
 
-  // Initial fetch
+  // Fetch all posts on mount
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         dispatch(setLoading(true));
-        const data = await getAllPosts(10, null);
+        const data = await getAllPosts(isAuthenticated);
         dispatch(setPosts(data));
       } catch (error) {
         console.error('Failed to fetch posts:', error);
@@ -32,44 +30,6 @@ const Home = () => {
 
     fetchPosts();
   }, [dispatch]);
-
-  // Fetch more posts when scrolling
-  const fetchMorePosts = useCallback(async () => {
-    if (isFetchingMore || !hasMore || !nextCursor) return;
-
-    try {
-      setIsFetchingMore(true);
-      const data = await getAllPosts(10, nextCursor);
-      dispatch(appendPosts(data));
-    } catch (error) {
-      console.error('Failed to fetch more posts:', error);
-    } finally {
-      setIsFetchingMore(false);
-    }
-  }, [dispatch, nextCursor, hasMore, isFetchingMore]);
-
-  // Infinite scroll observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isFetchingMore) {
-          fetchMorePosts();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentTarget = observerTarget.current;
-    if (currentTarget) {
-      observer.observe(currentTarget);
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
-    };
-  }, [hasMore, isFetchingMore, fetchMorePosts]);
 
   return (
     <Layout>
@@ -186,24 +146,6 @@ const Home = () => {
             ) : (
               <>
                 {posts.map((post) => <PostCard key={post._id} post={post} />)}
-                
-                {/* Infinite scroll trigger */}
-                {hasMore && (
-                  <div ref={observerTarget} className="py-8 text-center">
-                    {isFetchingMore && (
-                      <div className="flex items-center justify-center gap-3">
-                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-orange-500/30 border-t-orange-500"></div>
-                        <p className="text-sm font-semibold text-black/60">Loading more stories...</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-                
-                {!hasMore && posts.length > 0 && (
-                  <div className="py-8 text-center">
-                    <p className="text-sm font-semibold text-black/40">You've reached the end! 🎉</p>
-                  </div>
-                )}
               </>
             )}
           </section>

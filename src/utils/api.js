@@ -73,12 +73,9 @@ export const createPost = async (postData) => {
   return response.data;
 };
 
-export const getAllPosts = async (limit = 10, cursor = null) => {
-  const params = { limit };
-  if (cursor) {
-    params.cursor = cursor;
-  }
-  const response = await api.get('/posts', { params });
+export const getAllPosts = async (isAuthenticated) => {
+  const endpoint = isAuthenticated ? '/posts/AllPostsForAuthUser' : '/posts/AllPostsForUnauthUser';
+  const response = await api.get(endpoint);
   return response.data;
 };
 

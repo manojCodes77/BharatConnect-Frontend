@@ -8,24 +8,13 @@ const postsSlice = createSlice({
     savedPosts: [],
     loading: false,
     error: null,
-    nextCursor: null,
-    hasMore: true,
   },
   reducers: {
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
     setPosts: (state, action) => {
-      state.posts = action.payload.posts || action.payload;
-      state.nextCursor = action.payload.nextCursor || null;
-      state.hasMore = action.payload.hasMore !== undefined ? action.payload.hasMore : false;
-      state.loading = false;
-      state.error = null;
-    },
-    appendPosts: (state, action) => {
-      state.posts = [...state.posts, ...(action.payload.posts || [])];
-      state.nextCursor = action.payload.nextCursor || null;
-      state.hasMore = action.payload.hasMore !== undefined ? action.payload.hasMore : false;
+      state.posts = Array.isArray(action.payload) ? action.payload : (action.payload.posts || []);
       state.loading = false;
       state.error = null;
     },
@@ -74,5 +63,5 @@ const postsSlice = createSlice({
   },
 });
 
-export const { setLoading, setPosts, appendPosts, setMyPosts, setSavedPosts, addPost, updatePost, deletePost, updatePostInteraction, setError } = postsSlice.actions;
+export const { setLoading, setPosts, setMyPosts, setSavedPosts, addPost, updatePost, deletePost, updatePostInteraction, setError } = postsSlice.actions;
 export default postsSlice.reducer;
