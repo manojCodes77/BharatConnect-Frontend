@@ -9,6 +9,7 @@ import {
   commentPost as commentPostAPI,
   savePost as savePostAPI,
   sharePost as sharePostAPI,
+  getComments as getCommentsAPI,
 } from "../utils/api";
 import {
   deletePost,
@@ -36,8 +37,9 @@ const PostCard = ({ post, isMyPost = false }) => {
     content: post.content,
   });
   const [loading, setLoading] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const [saved, setSaved] = useState(false);
+  // Initialize liked/saved from post props (comes from backend)
+  const [liked, setLiked] = useState(post.isLikedByCurrentUser || false);
+  const [saved, setSaved] = useState(post.isSavedByCurrentUser || false);
   const [localLikesCount, setLocalLikesCount] = useState(post.likesCount || 0);
   const [localCommentsCount, setLocalCommentsCount] = useState(
     post.commentsCount || 0
@@ -46,6 +48,8 @@ const PostCard = ({ post, isMyPost = false }) => {
     post.sharesCount || 0
   );
   const [localComments, setLocalComments] = useState(post.comments || []);
+  const [commentsLoaded, setCommentsLoaded] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const [showSlideshow, setShowSlideshow] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -55,6 +59,29 @@ const PostCard = ({ post, isMyPost = false }) => {
 
   const handlePostClick = () => {
     navigate(`/post/${post._id}`);
+  };
+
+  // Load comments from API when toggling comments section
+  const handleToggleComments = async () => {
+    const newShowComments = !showComments;
+    setShowComments(newShowComments);
+    
+    // Load comments if opening and not already loaded
+    if (newShowComments && !commentsLoaded && !loadingComments) {
+      setLoadingComments(true);
+      try {
+        const response = await getCommentsAPI(post._id);
+        if (response.success) {
+          setLocalComments(response.comments || []);
+          setLocalCommentsCount(response.commentsCount || 0);
+          setCommentsLoaded(true);
+        }
+      } catch (error) {
+        console.error("Failed to load comments:", error);
+      } finally {
+        setLoadingComments(false);
+      }
+    }
   };
 
   const formatDate = (date) => {
@@ -547,7 +574,7 @@ const PostCard = ({ post, isMyPost = false }) => {
               <span>{localLikesCount > 0 ? `${localLikesCount}` : "Like"}</span>
             </button>
             <button
-              onClick={() => setShowComments(!showComments)}
+              onClick={handleToggleComments}
               className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition hover:bg-black/5"
             >
               <FaComment className="text-xs sm:text-sm" />
@@ -613,7 +640,11 @@ const PostCard = ({ post, isMyPost = false }) => {
 
               {/* Comments List */}
               <div className="space-y-3 sm:space-y-4">
-                {localComments.length === 0 ? (
+                {loadingComments ? (
+                  <p className="text-center text-xs sm:text-sm text-black/40">
+                    Loading comments...
+                  </p>
+                ) : localComments.length === 0 ? (
                   <p className="text-center text-xs sm:text-sm text-black/40">
                     No comments yet. Be the first!
                   </p>

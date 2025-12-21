@@ -125,4 +125,9 @@ export const getAllSavedPosts = async () => {
   return response.data.savedPosts || [];
 };
 
+export const getComments = async (postId) => {
+  const response = await api.get(`/posts/${postId}/comments`);
+  return response.data;
+};
+
 export default api;
