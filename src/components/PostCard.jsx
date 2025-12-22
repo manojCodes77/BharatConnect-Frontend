@@ -3,6 +3,7 @@ import { FaBookmark, FaComment, FaEdit, FaEllipsisH, FaHeart, FaImage, FaMinus, 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { addComment, selectCommentsByPostId, setComments, setCommentsLoading } from "../store/commentsSlice";
 import { deletePost, updatePost, updatePostInteraction } from "../store/postsSlice";
 import { commentPost as commentPostAPI, deletePost as deletePostAPI, getComments as getCommentsAPI, likePost as likePostAPI, savePost as savePostAPI, sharePost as sharePostAPI, updatePost as updatePostAPI } from "../utils/api";
 import { MAX_FILE_SIZE, MAX_IMAGES_PER_POST } from "../utils/constants";
@@ -28,21 +29,18 @@ const PostCard = ({ post, isMyPost = false }) => {
   const [liked, setLiked] = useState(post.isLikedByCurrentUser || false);
   const [saved, setSaved] = useState(post.isSavedByCurrentUser || false);
   const [localLikesCount, setLocalLikesCount] = useState(post.likesCount || 0);
-  const [localCommentsCount, setLocalCommentsCount] = useState(
-    post.commentsCount || 0
-  );
   const [localSharesCount, setLocalSharesCount] = useState(
     post.sharesCount || 0
   );
-  const [localComments, setLocalComments] = useState(post.comments || []);
-  const [commentsLoaded, setCommentsLoaded] = useState(false);
-  const [loadingComments, setLoadingComments] = useState(false);
   const [showSlideshow, setShowSlideshow] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { items: localComments, loading: loadingComments, loaded: commentsLoaded } = useSelector(
+    (state) => selectCommentsByPostId(state, post._id)
+  );
 
   const handlePostClick = () => {
     navigate(`/post/${post._id}`);
@@ -55,18 +53,18 @@ const PostCard = ({ post, isMyPost = false }) => {
 
     // Load comments if opening and not already loaded
     if (newShowComments && !commentsLoaded && !loadingComments) {
-      setLoadingComments(true);
+      dispatch(setCommentsLoading({ postId: post._id, loading: true }));
       try {
         const response = await getCommentsAPI(post._id);
         if (response.success) {
-          setLocalComments(response.comments || []);
-          setLocalCommentsCount(response.commentsCount || 0);
-          setCommentsLoaded(true);
+          dispatch(setComments({
+            postId: post._id,
+            comments: response.comments || [],
+          }));
         }
       } catch (error) {
         console.error("Failed to load comments:", error);
-      } finally {
-        setLoadingComments(false);
+        dispatch(setCommentsLoading({ postId: post._id, loading: false }));
       }
     }
   };
@@ -228,7 +226,12 @@ const PostCard = ({ post, isMyPost = false }) => {
           })
         );
         toast.success('Post updated successfully');
-        resetEditState();
+        // Reset edit state manually using response data (not stale post prop)
+        setIsEditing(false);
+        setEditData({ title: response.post.title, content: response.post.content });
+        setImagesToDelete([]);
+        setNewImages([]);
+        setNewImagePreviews([]);
       }
     } catch (error) {
       console.error("Failed to update post:", error);
@@ -273,15 +276,16 @@ const PostCard = ({ post, isMyPost = false }) => {
       try {
         const response = await commentPostAPI(post._id, commentText);
         if (response.success) {
-          setLocalComments((prev) => [...prev, response.comment]);
-          setLocalCommentsCount(response.commentsCount);
+          dispatch(addComment({
+            postId: post._id,
+            comment: response.comment,
+          }));
           setCommentText("");
           toast.success('Comment posted');
           dispatch(
             updatePostInteraction({
               postId: post._id,
               updates: {
-                comments: [...localComments, response.comment],
                 commentsCount: response.commentsCount,
               },
             })
@@ -753,7 +757,7 @@ const PostCard = ({ post, isMyPost = false }) => {
             >
               <FaComment className="text-xs sm:text-sm" />
               <span>
-                {localCommentsCount > 0 ? `${localCommentsCount}` : "Comment"}
+                {post.commentsCount > 0 ? `${post.commentsCount}` : "Comment"}
               </span>
             </button>
             <button
