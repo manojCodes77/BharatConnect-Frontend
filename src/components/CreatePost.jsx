@@ -34,10 +34,20 @@ const CreatePost = () => {
     });
   };
 
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
     if (files.length + selectedImages.length > 5) {
       toast.warning('You can only upload up to 5 images');
+      return;
+    }
+
+    // Validate file sizes
+    const oversizedFiles = files.filter(file => file.size > MAX_FILE_SIZE);
+    if (oversizedFiles.length > 0) {
+      const fileNames = oversizedFiles.map(f => f.name).join(', ');
+      toast.error(`File(s) too large (max 5MB): ${fileNames}`);
       return;
     }
 

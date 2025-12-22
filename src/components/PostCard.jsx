@@ -140,6 +140,8 @@ const PostCard = ({ post, isMyPost = false }) => {
   // Helper to get image ID (handles both _id and id)
   const getImageId = (image) => image._id || image.id;
 
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+
   const handleNewImageSelect = (e) => {
     const files = Array.from(e.target.files);
     // Count existing images that are NOT marked for deletion
@@ -148,6 +150,14 @@ const PostCard = ({ post, isMyPost = false }) => {
 
     if (totalImages > 5) {
       toast.warning('You can only have up to 5 images per post');
+      return;
+    }
+
+    // Validate file sizes
+    const oversizedFiles = files.filter(file => file.size > MAX_FILE_SIZE);
+    if (oversizedFiles.length > 0) {
+      const fileNames = oversizedFiles.map(f => f.name).join(', ');
+      toast.error(`File(s) too large (max 5MB): ${fileNames}`);
       return;
     }
 
@@ -301,6 +311,7 @@ const PostCard = ({ post, isMyPost = false }) => {
         const response = await savePostAPI(post._id);
         if (response.success) {
           // Optionally show success message
+          toast.success(response.message || (newSaved ? "Post saved" : "Post unsaved"));
         }
       } catch (error) {
         console.error("Failed to save post:", error);
