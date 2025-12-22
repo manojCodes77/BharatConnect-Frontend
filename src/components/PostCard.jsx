@@ -342,21 +342,6 @@ const PostCard = ({ post, isMyPost = false }) => {
     });
   };
 
-  // Helper to highlight @mentions
-  const highlightMentions = (text) => {
-    const parts = text.split(/(@\w+)/g);
-    return parts.map((part, index) => {
-      if (part.startsWith("@")) {
-        return (
-          <span key={index} className="text-orange-600 font-semibold">
-            {part}
-          </span>
-        );
-      }
-      return part;
-    });
-  };
-
   return (
     <>
       {/* Image Slideshow Modal */}
@@ -788,7 +773,7 @@ const PostCard = ({ post, isMyPost = false }) => {
                   <textarea
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
-                    placeholder="Write a comment... (use @name to mention someone)"
+                    placeholder="Write a comment..."
                     rows="2"
                     className="w-full rounded-xl sm:rounded-2xl border border-black/10 bg-white px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)] resize-none"
                   />
@@ -836,9 +821,6 @@ const PostCard = ({ post, isMyPost = false }) => {
                         <div className="rounded-xl sm:rounded-2xl bg-black/5 px-3 sm:px-4 py-2 sm:py-3">
                           <p className="text-xs sm:text-sm font-semibold text-black">
                             {comment.userId?.name || "Unknown User"}
-                          </p>
-                          <p className="mt-1 text-xs sm:text-sm text-black/70 wrap-break-word">
-                            {highlightMentions(comment.text)}
                           </p>
                         </div>
                         <p className="mt-1 px-3 sm:px-4 text-[0.65rem] sm:text-xs text-black/40">

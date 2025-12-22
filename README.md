@@ -62,7 +62,7 @@
 - **Infinite Scroll** - Seamless loading of more posts
 - **Post Interactions:**
   - ❤️ Like/Unlike posts
-  - 💬 Comment on posts with @mentions
+  - 💬 Comment on posts
   - 🔗 Share posts (copy link)
   - 🔖 Save posts for later
 
