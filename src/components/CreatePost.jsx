@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { createPost, getAllPosts } from '../utils/api';
-import { setPosts } from '../store/postsSlice';
+import { setPosts, addPost } from '../store/postsSlice';
 import { FaImage, FaVideo, FaCalendar, FaPen, FaTimes } from 'react-icons/fa';
 
 const CreatePost = () => {
@@ -83,8 +83,8 @@ const CreatePost = () => {
       const response = await createPost(submitData);
 
       if (response.success) {
-        const refreshedPosts = await getAllPosts();
-        dispatch(setPosts(refreshedPosts));
+        // Add the new post to myPosts
+        dispatch(addPost(response.post));
         toast.success('Post published successfully!');
         setFormData({ title: '', content: '' });
         setSelectedImages([]);

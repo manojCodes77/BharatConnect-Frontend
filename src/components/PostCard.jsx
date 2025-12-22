@@ -2,28 +2,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import {
-  deletePost as deletePostAPI,
-  updatePost as updatePostAPI,
-  likePost as likePostAPI,
-  commentPost as commentPostAPI,
-  savePost as savePostAPI,
-  sharePost as sharePostAPI,
-  getComments as getCommentsAPI,
+import { deletePost as deletePostAPI,updatePost as updatePostAPI,likePost as likePostAPI,commentPost as commentPostAPI,savePost as savePostAPI,sharePost as sharePostAPI,getComments as getCommentsAPI,deleteImage as deleteImageAPI,
 } from "../utils/api";
-import {
-  deletePost,
-  updatePost,
-  updatePostInteraction,
-} from "../store/postsSlice";
-import {
-  FaComment,
-  FaShare,
-  FaEllipsisH,
-  FaEdit,
-  FaTrash,
-  FaHeart,
-  FaBookmark,
+import {deletePost, updatePost, updatePostInteraction} from "../store/postsSlice";
+import {FaComment,FaShare,FaEllipsisH,FaEdit,FaTrash,FaHeart,FaBookmark,FaImage,FaTimes,FaMinus,FaPlus,
 } from "react-icons/fa";
 import ImageSlideshow from "./ImageSlideshow";
 
@@ -36,6 +18,12 @@ const PostCard = ({ post, isMyPost = false }) => {
     title: post.title,
     content: post.content,
   });
+  // Image editing state
+  const [existingImages, setExistingImages] = useState(post.images || []);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+  const [newImages, setNewImages] = useState([]);
+  const [newImagePreviews, setNewImagePreviews] = useState([]);
+
   const [loading, setLoading] = useState(false);
   // Initialize liked/saved from post props (comes from backend)
   const [liked, setLiked] = useState(post.isLikedByCurrentUser || false);
@@ -65,7 +53,7 @@ const PostCard = ({ post, isMyPost = false }) => {
   const handleToggleComments = async () => {
     const newShowComments = !showComments;
     setShowComments(newShowComments);
-    
+
     // Load comments if opening and not already loaded
     if (newShowComments && !commentsLoaded && !loadingComments) {
       setLoadingComments(true);
@@ -132,6 +120,63 @@ const PostCard = ({ post, isMyPost = false }) => {
     }
   };
 
+  // Image editing handlers
+  const handleToggleImageDeletion = (imageId) => {
+    setImagesToDelete((prev) => {
+      if (prev.includes(imageId)) {
+        // Unmark for deletion
+        return prev.filter((id) => id !== imageId);
+      } else {
+        // Mark for deletion
+        return [...prev, imageId];
+      }
+    });
+  };
+
+  const isImageMarkedForDeletion = (imageId) => {
+    return imagesToDelete.includes(imageId);
+  };
+
+  // Helper to get image ID (handles both _id and id)
+  const getImageId = (image) => image._id || image.id;
+
+  const handleNewImageSelect = (e) => {
+    const files = Array.from(e.target.files);
+    // Count existing images that are NOT marked for deletion
+    const remainingExistingImages = existingImages.filter(img => !imagesToDelete.includes(getImageId(img))).length;
+    const totalImages = remainingExistingImages + newImages.length + files.length;
+
+    if (totalImages > 5) {
+      toast.warning('You can only have up to 5 images per post');
+      return;
+    }
+
+    setNewImages((prev) => [...prev, ...files]);
+
+    // Create preview URLs
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewImagePreviews((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleRemoveNewImage = (index) => {
+    setNewImages((prev) => prev.filter((_, i) => i !== index));
+    setNewImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const resetEditState = () => {
+    setIsEditing(false);
+    setEditData({ title: post.title, content: post.content });
+    setExistingImages(post.images || []);
+    setImagesToDelete([]);
+    setNewImages([]);
+    setNewImagePreviews([]);
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!editData.title || !editData.content) {
@@ -141,21 +186,51 @@ const PostCard = ({ post, isMyPost = false }) => {
 
     try {
       setLoading(true);
-      const response = await updatePostAPI(post._id, editData);
+
+      // Create FormData for multipart upload
+      const submitData = new FormData();
+      submitData.append('title', editData.title);
+      submitData.append('content', editData.content);
+
+      // Debug: verify editData values
+      console.log('editData:', editData);
+      console.log('title:', editData.title);
+      console.log('content:', editData.content);
+
+      // Add image IDs to delete
+      if (imagesToDelete.length > 0) {
+        imagesToDelete.forEach((id) => {
+          submitData.append('deleteImageIds', id);
+        });
+      }
+
+      // Add new images
+      newImages.forEach((image) => {
+        submitData.append('images', image);
+      });
+
+      const response = await updatePostAPI(post._id, submitData);
       if (response.success) {
+        // Update local state with response data
+        const updatedImages = response.post.images || [];
+        setExistingImages(updatedImages);
+
         dispatch(
           updatePost({
             ...post,
-            ...editData,
-            updatedAt: new Date().toISOString(),
+            title: response.post.title,
+            content: response.post.content,
+            images: updatedImages,
+            imagesCount: response.post.imagesCount,
+            updatedAt: response.post.updatedAt,
           })
         );
         toast.success('Post updated successfully');
-        setIsEditing(false);
+        resetEditState();
       }
     } catch (error) {
       console.error("Failed to update post:", error);
-      toast.error("Failed to update post");
+      toast.error(error.message || "Failed to update post");
     } finally {
       setLoading(false);
     }
@@ -363,23 +438,119 @@ const PostCard = ({ post, isMyPost = false }) => {
                 rows="4"
                 className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black/70 transition focus:border-orange-400 focus:shadow-[0_0_0_4px_rgba(255,107,44,0.18)]"
               ></textarea>
-              <div className="flex gap-3">
+
+              {/* Existing Images */}
+              {existingImages.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-black/50">Current Images (click to mark for removal)</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {existingImages.map((image, index) => {
+                      const imageId = getImageId(image);
+                      const isMarked = isImageMarkedForDeletion(imageId);
+                      return (
+                        <div
+                          key={imageId || `existing-${index}`}
+                          className="relative cursor-pointer group"
+                          onClick={() => handleToggleImageDeletion(imageId)}
+                        >
+                          <img
+                            src={image.url}
+                            alt="Post image"
+                            className={`w-full h-24 object-cover rounded-xl border-2 transition-all ${isMarked
+                                ? "border-red-400 opacity-50 grayscale"
+                                : "border-black/10 group-hover:border-orange-300"
+                              }`}
+                          />
+                          {/* Toggle indicator */}
+                          <div
+                            className={`absolute inset-0 rounded-xl flex items-center justify-center transition-all ${isMarked
+                                ? "bg-red-500/30"
+                                : "bg-black/0 group-hover:bg-black/10"
+                              }`}
+                          >
+                            <div
+                              className={`rounded-full p-2 transition-all ${isMarked
+                                  ? "bg-red-500 text-white"
+                                  : "bg-white/80 text-black/40 opacity-0 group-hover:opacity-100"
+                                }`}
+                            >
+                              {isMarked ? (
+                                <FaPlus className="text-sm" title="Click to restore" />
+                              ) : (
+                                <FaMinus className="text-sm" title="Click to remove" />
+                              )}
+                            </div>
+                          </div>
+                          {/* Badge */}
+                          {isMarked && (
+                            <span className="absolute top-1 right-1 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold">
+                              Will delete
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* New Image Previews */}
+              {newImagePreviews.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-black/50">New Images</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {newImagePreviews.map((preview, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={preview}
+                          alt={`New image ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-xl border border-green-300"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveNewImage(index)}
+                          className="absolute top-2 right-2 rounded-full bg-red-500 p-1.5 text-white opacity-0 transition group-hover:opacity-100 hover:bg-red-600"
+                          title="Remove image"
+                        >
+                          <FaTimes className="text-xs" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Add Image Button */}
+                {(existingImages.filter(img => !imagesToDelete.includes(getImageId(img))).length + newImages.length) < 5 && (
+                  <label className="inline-flex items-center gap-2 rounded-full border border-black/10 px-3 py-2 text-xs font-semibold text-black/60 transition hover:border-orange-400/60 hover:bg-orange-500/5 hover:text-black cursor-pointer">
+                    <FaImage className="text-orange-500" />
+                    <span>Add images</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleNewImageSelect}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+
+                <div className="flex-1" />
+
+                <button
+                  type="button"
+                  onClick={resetEditState}
+                  className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold text-black/60 transition hover:bg-black/5"
+                >
+                  Cancel
+                </button>
                 <button
                   type="submit"
                   disabled={loading}
                   className="rounded-full bg-black px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-black/90 disabled:translate-y-0 disabled:opacity-50"
                 >
                   {loading ? "Saving..." : "Save changes"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditData({ title: post.title, content: post.content });
-                  }}
-                  className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold text-black/60 transition hover:bg-black/5"
-                >
-                  Cancel
                 </button>
               </div>
             </form>
@@ -552,7 +723,7 @@ const PostCard = ({ post, isMyPost = false }) => {
                               </span>
                             </div>
                           )}
-                          
+
                         </div>
                       ))}
                     </div>

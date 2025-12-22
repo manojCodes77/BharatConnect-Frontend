@@ -90,12 +90,52 @@ export const getPostById = async (postId) => {
 };
 
 export const updatePost = async (postId, postData) => {
+  // Check if postData is FormData (for image uploads)
+  const isFormData = postData instanceof FormData;
+  
+  if (isFormData) {
+    // Debug: Log FormData contents
+    console.log('FormData contents:');
+    for (let [key, value] of postData.entries()) {
+      console.log(`  ${key}:`, value);
+    }
+    
+    // Use native fetch API for FormData - it handles multipart/form-data correctly
+    const token = localStorage.getItem('token');
+    console.log('Token being sent:', token ? `Bearer ${token.substring(0, 20)}...` : 'NO TOKEN FOUND');
+    
+    const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        // Don't set Content-Type - fetch will set it automatically with boundary for FormData
+      },
+      body: postData,
+    });
+    
+    const data = await response.json();
+    console.log('Response from fetch:', data);
+    
+    if (!response.ok) {
+      const error = new Error(data.message);
+      error.response = { data, status: response.status };
+      throw error;
+    }
+    
+    return data;
+  }
+  
   const response = await api.put(`/posts/${postId}`, postData);
   return response.data;
 };
 
 export const deletePost = async (postId) => {
   const response = await api.delete(`/posts/${postId}`);
+  return response.data;
+};
+
+export const deleteImage = async (imageId) => {
+  const response = await api.delete(`/posts/images/${imageId}`);
   return response.data;
 };
 

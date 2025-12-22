@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FaBriefcase, FaEdit, FaGraduationCap, FaMapMarkerAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import PostCard from '../components/PostCard';
+import { setError, setLoading, setMyPosts } from '../store/postsSlice';
 import { getMyPosts } from '../utils/api';
-import { setMyPosts, setLoading, setError } from '../store/postsSlice';
-import { FaEdit, FaMapMarkerAlt, FaBriefcase, FaGraduationCap, FaEnvelope } from 'react-icons/fa';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const Profile = () => {
   return (
     <Layout>
       <div className="space-y-6 sm:space-y-10">
-        <section className="bg-white border border-black/[0.08] rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] overflow-hidden">
+        <section className="bg-white border border-black/8 rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] overflow-hidden">
           <div className="relative">
             <div className="h-32 sm:h-40 bg-linear-to-br from-black via-black/90 to-black/80"></div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,107,44,0.4),transparent_60%)]" />
@@ -102,7 +102,7 @@ const Profile = () => {
           </div>
         </section>
 
-        <section className="bg-white border border-black/[0.08] rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-4 sm:p-6">
+        <section className="bg-white border border-black/8 rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-4 sm:p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <span className="inline-flex items-center gap-[0.35rem] px-3 sm:px-[0.9rem] py-[0.3rem] sm:py-[0.35rem] rounded-full bg-[rgba(255,107,44,0.14)] text-[#d94a00] font-semibold tracking-[0.02em] uppercase text-[0.65rem] sm:text-xs">Your narrative</span>
@@ -121,17 +121,17 @@ const Profile = () => {
         </section>
 
         {localLoading ? (
-          <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
+          <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
             <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-black/10 border-t-orange-500"></div>
             <p className="mt-4 text-sm font-semibold text-black/60">Gathering your updates...</p>
           </div>
         ) : error ? (
-          <div className="bg-white border border-red-200 bg-red-50/80 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-8 text-red-700">
+          <div className=" border border-red-200 bg-red-50/80 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-8 text-red-700">
             <p className="text-sm font-bold">We could not load your timeline</p>
             <p className="text-sm">{error}</p>
           </div>
         ) : myPosts.length === 0 ? (
-          <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
+          <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-500/10 text-4xl">✍️</div>
             <h3 className="text-xl font-semibold text-black">No stories yet</h3>
             <p className="mt-2 text-sm text-black/60">Share your journey to inspire collaborators across BharatConnect.</p>

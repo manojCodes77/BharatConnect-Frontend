@@ -29,7 +29,7 @@ const postsSlice = createSlice({
       state.error = null;
     },
     addPost: (state, action) => {
-      state.posts.unshift(action.payload);
+      state.myPosts.unshift(action.payload);
     },
     updatePost: (state, action) => {
       const index = state.posts.findIndex(post => post._id === action.payload._id);

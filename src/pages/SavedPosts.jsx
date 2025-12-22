@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FaBookmark } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import PostCard from '../components/PostCard';
+import { setError, setLoading, setSavedPosts } from '../store/postsSlice';
 import { getAllSavedPosts } from '../utils/api';
-import { setSavedPosts, setLoading, setError } from '../store/postsSlice';
-import { FaBookmark } from 'react-icons/fa';
 
 const SavedPosts = () => {
   const dispatch = useDispatch();
