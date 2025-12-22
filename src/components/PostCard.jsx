@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { FaBookmark, FaComment, FaEdit, FaEllipsisH, FaHeart, FaImage, FaMinus, FaPlus, FaShare, FaTimes, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { deletePost as deletePostAPI, updatePost as updatePostAPI, likePost as likePostAPI, commentPost as commentPostAPI, savePost as savePostAPI, sharePost as sharePostAPI, getComments as getCommentsAPI } from "../utils/api";
 import { deletePost, updatePost, updatePostInteraction } from "../store/postsSlice";
+import { commentPost as commentPostAPI, deletePost as deletePostAPI, getComments as getCommentsAPI, likePost as likePostAPI, savePost as savePostAPI, sharePost as sharePostAPI, updatePost as updatePostAPI } from "../utils/api";
 import { MAX_FILE_SIZE, MAX_IMAGES_PER_POST } from "../utils/constants";
-import { FaComment, FaShare, FaEllipsisH, FaEdit, FaTrash, FaHeart, FaBookmark, FaImage, FaTimes, FaMinus, FaPlus } from "react-icons/fa";
 import ImageSlideshow from "./ImageSlideshow";
 
 const PostCard = ({ post, isMyPost = false }) => {

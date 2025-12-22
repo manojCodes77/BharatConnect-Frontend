@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { FaCalendar, FaImage, FaPen, FaTimes, FaVideo } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { createPost } from '../utils/api';
 import { addPost } from '../store/postsSlice';
+import { createPost } from '../utils/api';
 import { MAX_FILE_SIZE, MAX_IMAGES_PER_POST } from '../utils/constants';
-import { FaImage, FaVideo, FaCalendar, FaPen, FaTimes } from 'react-icons/fa';
 
 const CreatePost = () => {
   const [showForm, setShowForm] = useState(false);

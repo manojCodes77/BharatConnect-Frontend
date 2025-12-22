@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { FaBars, FaBookmark, FaHome, FaSignOutAlt, FaTimes, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../store/authSlice";
-import { FaHome, FaUser, FaSignOutAlt, FaBars, FaTimes, FaBookmark } from "react-icons/fa";
 
 const Navbar = () => {
   const dispatch = useDispatch();

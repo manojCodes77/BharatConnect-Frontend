@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { FaEnvelope, FaHandshake, FaLock, FaRegLightbulb, FaUsers } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { loginFailure, loginStart, loginSuccess } from '../store/authSlice';
 import { signIn } from '../utils/api';
-import { loginStart, loginSuccess, loginFailure } from '../store/authSlice';
-import { FaEnvelope, FaLock, FaRegLightbulb, FaUsers, FaHandshake } from 'react-icons/fa';
 
 const SignIn = () => {
   const [formData, setFormData] = useState({

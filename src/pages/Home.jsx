@@ -36,7 +36,7 @@ const Home = () => {
       <div className="space-y-6 sm:space-y-10">
         <section className="grid gap-4 sm:gap-6 lg:grid-cols-[250px_minmax(0,1fr)] xl:grid-cols-[250px_minmax(0,1fr)_280px]">
           <aside className="order-2 space-y-4 sm:space-y-5 lg:order-1">
-            <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
+            <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
               <div className="mb-5 flex items-center justify-between">
                 <span className="inline-flex items-center gap-[0.35rem] px-[0.9rem] py-[0.35rem] rounded-full bg-[rgba(255,107,44,0.14)] text-[#d94a00] font-semibold tracking-[0.02em] uppercase text-xs">Momentum today</span>
                 <FaFire className="text-orange-500" />
@@ -60,7 +60,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
+            <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
               <div className="mb-5 flex items-center justify-between">
                 <span className="inline-flex items-center gap-[0.35rem] px-[0.9rem] py-[0.35rem] rounded-full bg-[rgba(255,107,44,0.14)] text-[#d94a00] font-semibold tracking-[0.02em] uppercase text-xs">Spotlight</span>
                 <FaTrophy className="text-orange-500" />
@@ -128,12 +128,12 @@ const Home = () => {
             {isAuthenticated && <CreatePost />}
 
             {localLoading ? (
-              <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
+              <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
                 <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-white/50 border-t-white"></div>
                 <p className="mt-6 text-sm font-semibold text-black/60">Loading fresh perspectives...</p>
               </div>
             ) : error ? (
-              <div className="bg-white border-red-200 bg-red-50/80 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-8 text-red-700">
+              <div className=" border-red-200 bg-red-50/80 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-8 text-red-700">
                 <p className="text-sm font-bold">We missed a beat</p>
                 <p className="text-sm">{error}</p>
               </div>
@@ -151,7 +151,7 @@ const Home = () => {
           </section>
 
           <aside className="order-3 hidden space-y-5 xl:block">
-            <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
+            <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6">
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-[0.35rem] px-[0.9rem] py-[0.35rem] rounded-full bg-[rgba(255,107,44,0.14)] text-[#d94a00] font-semibold tracking-[0.02em] uppercase text-xs">Quick actions</span>
               </div>
@@ -171,7 +171,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="relative overflow-hidden bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6 after:content-[''] after:absolute after:inset-[-60%] after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,107,44,0.18),rgba(255,107,44,0))] after:opacity-70 after:pointer-events-none">
+            <div className="relative overflow-hidden bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-6 after:content-[''] after:absolute after:inset-[-60%] after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,107,44,0.18),rgba(255,107,44,0))] after:opacity-70 after:pointer-events-none">
               <h3 className="relative z-10 text-lg font-semibold text-black">Premium circles</h3>
               <p className="relative z-10 mt-2 text-sm text-black/60">Unlock private cohorts, limited mentorship, and curated hiring boards.</p>
               <button className="relative z-10 mt-5 w-full rounded-full bg-black text-sm font-semibold text-white py-3 transition hover:-translate-y-0.5 hover:bg-black/90">

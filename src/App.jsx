@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  Navigate,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
 } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "./store/authSlice";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SavedPosts from "./pages/SavedPosts";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import SinglePost from "./pages/SinglePost";
-import ProtectedRoute from "./components/ProtectedRoute";
-import axios from "axios";
+import { logout } from "./store/authSlice";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);

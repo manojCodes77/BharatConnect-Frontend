@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signUp } from '../utils/api';
-import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({

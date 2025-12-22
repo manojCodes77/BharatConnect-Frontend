@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import PostCard from "../components/PostCard";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
+import PostCard from "../components/PostCard";
 import { getPostById } from "../utils/api";
 
 const SinglePost = () => {

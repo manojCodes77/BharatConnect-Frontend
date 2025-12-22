@@ -36,7 +36,7 @@ const SavedPosts = () => {
   return (
     <Layout>
       <div className="space-y-6 sm:space-y-10">
-        <section className="bg-white border border-black/[0.08] rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-4 sm:p-6">
+        <section className="bg-white border border-black/8 rounded-2xl sm:rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-4 sm:p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <span className="inline-flex items-center gap-[0.35rem] px-3 sm:px-[0.9rem] py-[0.3rem] sm:py-[0.35rem] rounded-full bg-[rgba(255,107,44,0.14)] text-[#d94a00] font-semibold tracking-[0.02em] uppercase text-[0.65rem] sm:text-xs">
@@ -55,17 +55,17 @@ const SavedPosts = () => {
         </section>
 
         {localLoading ? (
-          <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
+          <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
             <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-black/10 border-t-orange-500"></div>
             <p className="mt-4 text-sm font-semibold text-black/60">Loading your saved posts...</p>
           </div>
         ) : error ? (
-          <div className="bg-white border border-red-200 bg-red-50/80 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-8 text-red-700">
+          <div className=" border border-red-200 bg-red-50/80 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-8 text-red-700">
             <p className="text-sm font-bold">We could not load your saved posts</p>
             <p className="text-sm">{error}</p>
           </div>
         ) : !savedPosts || savedPosts.length === 0 ? (
-          <div className="bg-white border border-black/[0.08] rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
+          <div className="bg-white border border-black/8 rounded-[18px] shadow-[0_18px_36px_rgba(17,17,20,0.08)] p-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-500/10 text-4xl">
               <FaBookmark className="text-orange-600" />
             </div>

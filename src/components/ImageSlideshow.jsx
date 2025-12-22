@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 
 const ImageSlideshow = ({ images, initialIndex = 0, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
