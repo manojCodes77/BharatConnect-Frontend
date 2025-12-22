@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { deletePost as deletePostAPI,updatePost as updatePostAPI,likePost as likePostAPI,commentPost as commentPostAPI,savePost as savePostAPI,sharePost as sharePostAPI,getComments as getCommentsAPI,deleteImage as deleteImageAPI,
-} from "../utils/api";
-import {deletePost, updatePost, updatePostInteraction} from "../store/postsSlice";
-import {FaComment,FaShare,FaEllipsisH,FaEdit,FaTrash,FaHeart,FaBookmark,FaImage,FaTimes,FaMinus,FaPlus,
-} from "react-icons/fa";
+import { deletePost as deletePostAPI, updatePost as updatePostAPI, likePost as likePostAPI, commentPost as commentPostAPI, savePost as savePostAPI, sharePost as sharePostAPI, getComments as getCommentsAPI } from "../utils/api";
+import { deletePost, updatePost, updatePostInteraction } from "../store/postsSlice";
+import { MAX_FILE_SIZE, MAX_IMAGES_PER_POST } from "../utils/constants";
+import { FaComment, FaShare, FaEllipsisH, FaEdit, FaTrash, FaHeart, FaBookmark, FaImage, FaTimes, FaMinus, FaPlus } from "react-icons/fa";
 import ImageSlideshow from "./ImageSlideshow";
 
 const PostCard = ({ post, isMyPost = false }) => {
@@ -140,16 +139,14 @@ const PostCard = ({ post, isMyPost = false }) => {
   // Helper to get image ID (handles both _id and id)
   const getImageId = (image) => image._id || image.id;
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
-
   const handleNewImageSelect = (e) => {
     const files = Array.from(e.target.files);
     // Count existing images that are NOT marked for deletion
     const remainingExistingImages = existingImages.filter(img => !imagesToDelete.includes(getImageId(img))).length;
     const totalImages = remainingExistingImages + newImages.length + files.length;
 
-    if (totalImages > 5) {
-      toast.warning('You can only have up to 5 images per post');
+    if (totalImages > MAX_IMAGES_PER_POST) {
+      toast.warning(`You can only have up to ${MAX_IMAGES_PER_POST} images per post`);
       return;
     }
 
@@ -201,11 +198,6 @@ const PostCard = ({ post, isMyPost = false }) => {
       const submitData = new FormData();
       submitData.append('title', editData.title);
       submitData.append('content', editData.content);
-
-      // Debug: verify editData values
-      console.log('editData:', editData);
-      console.log('title:', editData.title);
-      console.log('content:', editData.content);
 
       // Add image IDs to delete
       if (imagesToDelete.length > 0) {

@@ -94,15 +94,8 @@ export const updatePost = async (postId, postData) => {
   const isFormData = postData instanceof FormData;
   
   if (isFormData) {
-    // Debug: Log FormData contents
-    console.log('FormData contents:');
-    for (let [key, value] of postData.entries()) {
-      console.log(`  ${key}:`, value);
-    }
-    
     // Use native fetch API for FormData - it handles multipart/form-data correctly
     const token = localStorage.getItem('token');
-    console.log('Token being sent:', token ? `Bearer ${token.substring(0, 20)}...` : 'NO TOKEN FOUND');
     
     const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
       method: 'PUT',
@@ -114,7 +107,6 @@ export const updatePost = async (postId, postData) => {
     });
     
     const data = await response.json();
-    console.log('Response from fetch:', data);
     
     if (!response.ok) {
       const error = new Error(data.message);

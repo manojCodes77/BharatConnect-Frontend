@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { createPost, getAllPosts } from '../utils/api';
-import { setPosts, addPost } from '../store/postsSlice';
+import { createPost } from '../utils/api';
+import { addPost } from '../store/postsSlice';
+import { MAX_FILE_SIZE, MAX_IMAGES_PER_POST } from '../utils/constants';
 import { FaImage, FaVideo, FaCalendar, FaPen, FaTimes } from 'react-icons/fa';
 
 const CreatePost = () => {
@@ -34,12 +35,10 @@ const CreatePost = () => {
     });
   };
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
-
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
-    if (files.length + selectedImages.length > 5) {
-      toast.warning('You can only upload up to 5 images');
+    if (files.length + selectedImages.length > MAX_IMAGES_PER_POST) {
+      toast.warning(`You can only upload up to ${MAX_IMAGES_PER_POST} images`);
       return;
     }
 
