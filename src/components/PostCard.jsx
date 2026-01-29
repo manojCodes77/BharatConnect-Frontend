@@ -822,6 +822,9 @@ const PostCard = ({ post, isMyPost = false }) => {
                           <p className="text-xs sm:text-sm font-semibold text-black">
                             {comment.userId?.name || "Unknown User"}
                           </p>
+                          <p className="text-xs sm:text-sm text-black/70 mt-1">
+                            {comment.text || ""}
+                          </p>
                         </div>
                         <p className="mt-1 px-3 sm:px-4 text-[0.65rem] sm:text-xs text-black/40">
                           {formatDate(comment.createdAt)}
